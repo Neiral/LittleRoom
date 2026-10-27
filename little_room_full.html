@@ -1,85 +1,1025 @@
-<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#0b0b0e"><title>Little Room — Check in, grow, make it home</title>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#09090b">
+<meta name="description" content="A minimal camera and Discord streak app.">
+<title>STREAK</title>
+
+<link rel="manifest" href="./manifest.json">
+<link rel="icon" id="appIcon" type="image/svg+xml">
+<link rel="apple-touch-icon" id="appleIcon">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
 <style>
-:root{color-scheme:dark;--bg:#0b0b0e;--panel:#15151b;--panel2:#1d1d25;--line:#30303b;--text:#f5f1ec;--muted:#a5a1ad;--accent:#f08b58;--gold:#ffd17a;--green:#8fdaa7;--red:#ff817d}*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 10% -10%,#30212a 0,transparent 40%),var(--bg);color:var(--text);font:14px/1.45 Inter,system-ui,-apple-system,Segoe UI,sans-serif}button,input,textarea,select{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}button:disabled{opacity:.42;cursor:not-allowed}.app{max-width:1450px;margin:auto;padding:20px;min-height:100vh}.topbar{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:18px}.brand{display:flex;align-items:center;gap:12px}.logo{width:44px;height:44px;display:grid;place-items:center;border-radius:14px;background:linear-gradient(145deg,#ffbd8b,#e65d3b);color:#24130f;font-size:24px}.brand h1{margin:0;font-size:20px;letter-spacing:-.6px}.brand p{margin:2px 0 0;color:var(--muted);font-size:12px}.top-actions{display:flex;align-items:center;gap:9px;flex-wrap:wrap;justify-content:flex-end}.wallet,.level-chip,.icon-btn{background:#191920;border:1px solid var(--line);border-radius:13px;padding:10px 13px;white-space:nowrap}.wallet b{color:var(--gold)}.level-chip{font-size:12px;color:var(--muted)}.level-chip b{color:var(--text)}.icon-btn{color:var(--text);padding:10px 12px}.nav{display:flex;gap:7px;overflow:auto;padding:5px;margin-bottom:17px;background:#111116;border:1px solid #272731;border-radius:16px}.nav button{flex:1;min-width:90px;border:1px solid transparent;border-radius:11px;background:transparent;color:var(--muted);padding:11px}.nav button.active{background:#28232a;border-color:#49362f;color:var(--text)}.nav button span{margin-right:7px}.page{display:none}.page.active{display:block}.layout{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:17px;align-items:start}.panel{border:1px solid var(--line);background:#15151bdc;border-radius:21px;overflow:hidden;min-width:0}.panel-head{padding:17px 19px;border-bottom:1px solid #ffffff0a;display:flex;align-items:center;justify-content:space-between;gap:10px}.panel-head h2{font-size:15px;margin:0}.panel-head p{font-size:11px;color:var(--muted);margin:4px 0 0}.muted{color:var(--muted)}.small{font-size:11px}.room-wrap{padding:15px}.room{position:relative;aspect-ratio:1.5;min-height:300px;max-height:610px;overflow:hidden;border-radius:15px;background:#c99a76;isolation:isolate;box-shadow:inset 0 0 0 1px #ffffff18}.wall{position:absolute;inset:0 0 29%;background:linear-gradient(90deg,#c8a18c,#d9b59c 50%,#c7a08c);z-index:-3}.wall:after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 23%,#8b5f4b08 23.2% 23.5%)}.floor{position:absolute;inset:71% 0 0;background:repeating-linear-gradient(90deg,#9e6e54 0 12%,#ae7b5c 12.2% 12.5%);border-top:7px solid #80533f;z-index:-2}.floor:after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent 0 43px,#70483325 44px 46px)}.baseboard{position:absolute;top:69.5%;height:2%;width:100%;background:#f0d0b4}.window{position:absolute;left:8%;top:9%;width:23%;height:34%;border:8px solid #f3d6b9;border-radius:3px;background:linear-gradient(140deg,#8dc7d1,#d6e6c8 62%,#f6d5a0);box-shadow:0 5px 10px #6d443325}.window:before{content:"";position:absolute;inset:0 48%;background:#f3d6b9}.window:after{content:"";position:absolute;left:0;right:0;top:48%;height:6px;background:#f3d6b9}.poster{position:absolute;right:12%;top:12%;width:13%;height:20%;background:#f2d8a8;border:7px solid #f0d4b6;display:grid;place-items:center;color:#8c6a50;font-size:clamp(14px,2.3vw,25px)}.poster:after{content:"✦";transform:rotate(-10deg)}.sunlight{position:absolute;left:20%;top:43%;width:40%;height:28%;background:linear-gradient(120deg,#ffe2a04a,transparent);clip-path:polygon(0 0,100% 0,80% 100%,0 100%);pointer-events:none}.character{position:absolute;left:49%;top:55%;width:70px;height:92px;transform:translate(-50%,-50%);z-index:4;transition:filter .3s}.char-shadow{position:absolute;bottom:-2px;left:5px;width:60px;height:12px;background:#5c3d3338;border-radius:50%}.char-body{position:absolute;bottom:4px;left:12px;width:46px;height:45px;background:#e78353;border-radius:22px 22px 15px 15px;border:3px solid #9e563f}.char-head{position:absolute;top:4px;left:7px;width:57px;height:54px;background:#f4c38f;border:3px solid #9e765c;border-radius:48% 48% 43% 43%;box-shadow:inset -4px -4px 0 #d99e76}.eye{position:absolute;top:23px;width:5px;height:8px;border-radius:50%;background:#4a302c}.eye.left{left:16px}.eye.right{right:16px}.mouth{position:absolute;left:23px;top:34px;width:10px;height:5px;border-bottom:2px solid #79483e;border-radius:50%}.leg{position:absolute;bottom:0;width:13px;height:15px;background:#65516b;border-radius:4px 4px 7px 7px}.leg.one{left:18px}.leg.two{right:18px}.character.happy{animation:happy .6s ease}.character.sleeping .char-head{transform:rotate(9deg)}.character.sleeping .eye{height:2px;top:27px}.character.sleeping .mouth{border:0;border-top:2px solid #79483e}.character.low .char-head{filter:saturate(.5)}@keyframes happy{0%,100%{transform:translate(-50%,-50%) rotate(0)}30%{transform:translate(-50%,-60%) rotate(-7deg)}60%{transform:translate(-50%,-55%) rotate(7deg)}}.room-item{position:absolute;transform:translate(-50%,-100%);z-index:3;animation:appear .32s ease both;filter:drop-shadow(0 5px 3px #51332820)}@keyframes appear{from{opacity:0;transform:translate(-50%,-85%) scale(.82)}to{opacity:1;transform:translate(-50%,-100%) scale(1)}}.item-svg{display:block;width:100%;height:100%;overflow:visible}.room-caption{position:absolute;left:13px;bottom:12px;border-radius:10px;background:#4e3526b8;color:#fff0e5;padding:8px 10px;font-size:10px;backdrop-filter:blur(5px);max-width:70%}.room-caption b{color:white}.room-footer{display:flex;justify-content:space-between;align-items:center;gap:9px;margin-top:13px;flex-wrap:wrap}.btn{border:1px solid transparent;border-radius:11px;padding:10px 13px;font-weight:750}.primary{background:var(--accent);color:#26140f}.secondary{background:#25252c;border-color:var(--line);color:var(--text)}.danger{background:#342020;border-color:#623939;color:#ffb0a9}.ghost{background:transparent;border-color:var(--line);color:var(--muted)}.stat-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:14px}.stat{padding:13px;border:1px solid var(--line);background:#17171d;border-radius:14px;min-width:0}.stat .label{color:var(--muted);font-size:10px}.stat .value{font-size:20px;font-weight:800;margin-top:5px;white-space:nowrap}.stat .sub{font-size:10px;color:var(--muted);margin-top:3px}.progress{height:7px;background:#30303a;border-radius:99px;overflow:hidden;margin-top:9px}.progress>i{display:block;height:100%;width:0;background:linear-gradient(90deg,#e66b47,#ffd17a);border-radius:99px;transition:width .3s}.side-stack{display:flex;flex-direction:column;gap:14px}.side-body{padding:15px}.mood-row{display:flex;align-items:center;gap:12px}.mood-face{width:46px;height:46px;border-radius:15px;background:#2c252a;display:grid;place-items:center;font-size:24px}.mood-row h3{margin:0;font-size:13px}.mood-row p{margin:3px 0 0;font-size:11px;color:var(--muted)}.energy-track{height:8px;background:#30303a;border-radius:99px;margin:13px 0 6px;overflow:hidden}.energy-track i{height:100%;display:block;background:#91c99d;border-radius:99px;transition:width .3s}.duebox{margin-top:12px;border:1px solid #3a3433;background:#211d20;border-radius:13px;padding:12px}.duebox b{font-size:12px}.duebox p{margin:4px 0 0;color:var(--muted);font-size:11px}.shop-list{padding:12px;display:flex;flex-direction:column;gap:9px;max-height:690px;overflow:auto}.tabs{display:flex;gap:5px;padding:11px 12px;border-bottom:1px solid #ffffff0b}.tab{flex:1;background:transparent;border:1px solid transparent;color:var(--muted);padding:8px 3px;border-radius:9px;font-size:11px}.tab.active{color:var(--text);background:#2a292f;border-color:#3c3940}.item-card{display:grid;grid-template-columns:61px minmax(0,1fr);gap:10px;padding:9px;border:1px solid #34343b;background:#202026;border-radius:13px}.item-card.owned{border-color:#486e55;background:#1b2821}.art{height:64px;border-radius:9px;background:#2c2a30;display:grid;place-items:center;overflow:hidden}.art svg{width:55px;height:55px}.info{min-width:0;display:flex;flex-direction:column;justify-content:center;gap:4px}.info h3{font-size:12px;margin:0}.info p{font-size:10px;line-height:1.35;color:var(--muted);margin:0}.bottom{display:flex;justify-content:space-between;align-items:center;gap:5px;margin-top:4px}.price{font-size:11px;font-weight:800;color:var(--gold);white-space:nowrap}.buy{padding:6px 9px;font-size:10px;background:var(--accent);color:#28150e;border:0;border-radius:8px;font-weight:800}.owned-label{font-size:10px;color:var(--green);font-weight:750}.section-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(280px,.9fr);gap:16px}.content-pad{padding:17px}.field{display:flex;flex-direction:column;gap:6px;margin-bottom:13px}.field label{font-size:11px;color:var(--muted)}.field input,.field textarea,.field select,.text-input{width:100%;background:#0f0f14;border:1px solid var(--line);color:var(--text);border-radius:10px;padding:11px 12px;min-width:0}.field textarea{resize:vertical;min-height:80px}.field small{font-size:10px;color:var(--muted)}.preset-row{display:flex;flex-wrap:wrap;gap:7px;margin:7px 0 12px}.preset{border:1px solid var(--line);background:#22222a;color:var(--muted);border-radius:999px;padding:8px 10px;font-size:11px}.preset.active{border-color:#8e5c46;background:#352720;color:#ffd0ad}.camera-box{position:relative;background:#08080a;border:1px solid var(--line);border-radius:14px;overflow:hidden;min-height:220px;display:grid;place-items:center}.camera-box video,.camera-box img{display:block;width:100%;max-height:470px;object-fit:contain}.camera-placeholder{text-align:center;color:var(--muted);padding:35px 15px}.camera-placeholder div{font-size:34px;margin-bottom:8px}.camera-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:11px}.camera-actions .btn{flex:1}.record-dot{display:inline-block;width:7px;height:7px;background:#ff5c58;border-radius:50%;margin-right:6px}.notice{padding:11px 12px;border:1px solid #39343b;background:#1d1b22;border-radius:11px;color:var(--muted);font-size:11px;margin:10px 0}.notice.good{border-color:#35543f;color:#a8dfb4;background:#18221b}.notice.bad{border-color:#613a3a;color:#ffb0a9;background:#261919}.feed-list{display:flex;flex-direction:column;gap:9px}.feed-entry{border:1px solid var(--line);background:#191920;border-radius:12px;padding:12px;display:flex;justify-content:space-between;gap:10px}.feed-entry b{font-size:12px}.feed-entry p{font-size:10px;color:var(--muted);margin:4px 0 0}.feed-entry .right{text-align:right;white-space:nowrap;color:var(--gold);font-weight:800;font-size:11px}.empty{padding:22px;text-align:center;color:var(--muted);font-size:12px;border:1px dashed var(--line);border-radius:13px}.settings-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}.settings-card{border:1px solid var(--line);background:#17171d;border-radius:15px;padding:15px}.settings-card h3{margin:0 0 7px;font-size:13px}.settings-card p{font-size:11px;color:var(--muted);line-height:1.55;margin:0 0 13px}.toggle-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid #ffffff0b}.toggle-row:last-child{border-bottom:0}.toggle-row b{font-size:12px}.toggle-row small{display:block;color:var(--muted);font-size:10px;margin-top:3px}.switch{appearance:none;width:38px;height:22px;border-radius:99px;background:#44444d;position:relative;flex:none;cursor:pointer}.switch:checked{background:#c86b48}.switch:before{content:"";position:absolute;width:16px;height:16px;top:3px;left:3px;border-radius:50%;background:white;transition:transform .2s}.switch:checked:before{transform:translateX(16px)}.toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:#f2eee8;color:#191518;padding:12px 17px;border-radius:13px;box-shadow:0 12px 35px #0006;font-weight:750;font-size:12px;transition:.25s;z-index:100;max-width:92vw;text-align:center}.toast.show{opacity:1;transform:translate(-50%,0)}.backdrop{position:fixed;inset:0;z-index:80;background:#08080ad9;display:none;align-items:center;justify-content:center;padding:18px;overflow:auto}.backdrop.show{display:flex}.modal{max-width:460px;width:100%;max-height:90vh;overflow:auto;background:#1c1b21;border:1px solid var(--line);border-radius:20px;padding:22px}.modal.center{text-align:center}.modal h2{margin:7px 0;font-size:20px}.modal p{font-size:12px;color:var(--muted);line-height:1.6}.modal .primary{width:100%;margin-top:8px}.modal-icon{font-size:37px}.voice-status{font-size:11px;color:var(--muted);margin-top:8px}.tiny-footer{text-align:center;color:#77737e;font-size:10px;padding:18px 0 5px}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}@media(max-width:930px){.layout{grid-template-columns:minmax(0,1fr) 300px}.stat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:720px){.app{padding:12px}.topbar{align-items:flex-start}.top-actions{gap:6px}.wallet,.level-chip,.icon-btn{padding:8px 9px;font-size:11px}.brand h1{font-size:17px}.brand p{max-width:150px}.layout,.section-grid{grid-template-columns:1fr}.side-stack{display:grid;grid-template-columns:1fr}.room{min-height:250px;aspect-ratio:1.2}.shop-list{display:grid;grid-template-columns:1fr 1fr;max-height:none}.item-card{grid-template-columns:1fr}.art{height:70px}.art svg{width:60px;height:60px}.settings-grid{grid-template-columns:1fr}.nav button{min-width:75px;padding:10px 6px;font-size:12px}.stat .value{font-size:18px}}@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
-</style></head><body><div class="app">
-<header class="topbar"><div class="brand"><div class="logo">⌂</div><div><h1>Little Room</h1><p>Check in. Grow. Make it home.</p></div></div><div class="top-actions"><div class="level-chip">LVL <b id="topLevel">1</b> · <span id="topXP">0 XP</span></div><div class="wallet">✦ <b id="topSparks">0</b> Sparks</div><button class="icon-btn" id="quickSettings" title="Settings">⚙</button></div></header>
-<nav class="nav" aria-label="Main navigation"><button class="active" data-page="room"><span>⌂</span>Room</button><button data-page="checkin"><span>◉</span>Check-in</button><button data-page="shop"><span>✦</span>Shop</button><button data-page="progress"><span>↗</span>Progress</button><button data-page="settings"><span>⚙</span>Settings</button></nav>
-<main>
-<section class="page active" id="page-room"><div class="layout"><div><section class="panel"><div class="panel-head"><div><h2 id="roomTitle">Your room</h2><p id="roomSubtitle">A fresh start. Let's make it feel like home.</p></div><span class="level-chip" id="roomItemCount">0 items</span></div><div class="room-wrap"><div class="room" id="room"><div class="wall"></div><div class="window"></div><div class="poster"></div><div class="sunlight"></div><div class="baseboard"></div><div class="floor"></div><div id="furnitureLayer"></div><div class="character" id="character" aria-label="Your character"><div class="char-shadow"></div><div class="char-body"></div><div class="char-head"><i class="eye left"></i><i class="eye right"></i><i class="mouth"></i></div><div class="leg one"></div><div class="leg two"></div></div><div class="room-caption"><b id="moodLabel">Feeling hopeful</b><br><span id="roomMessage">Let's build our room.</span></div></div><div class="room-footer"><span class="small muted" id="roomHint">Every check-in helps your little home grow.</span><button class="btn primary" data-goto="checkin">＋ Check in</button></div></div></section><div class="stat-grid"><div class="stat"><div class="label">CURRENT STREAK</div><div class="value" id="statStreak">0 🔥</div><div class="sub" id="streakSub">Start your first check-in</div></div><div class="stat"><div class="label">LIFETIME XP</div><div class="value" id="statXP">0</div><div class="sub" id="xpSub">Level 1 journey</div><div class="progress"><i id="xpBar"></i></div></div><div class="stat"><div class="label">ENERGY</div><div class="value" id="statEnergy">80%</div><div class="sub">Rest and check in</div><div class="progress"><i id="energyBar"></i></div></div><div class="stat"><div class="label">CHECK-INS</div><div class="value" id="statCheckins">0</div><div class="sub">All-time total</div></div></div></div>
-<div class="side-stack"><section class="panel"><div class="panel-head"><div><h2>Your companion</h2><p>Little steps still count.</p></div><span id="moodEmoji">🙂</span></div><div class="side-body"><div class="mood-row"><div class="mood-face" id="moodFace">🙂</div><div><h3 id="moodTitle">Hopeful</h3><p id="moodDescription">Ready to see you when you are.</p></div></div><div class="energy-track"><i id="sideEnergyBar" style="width:80%"></i></div><div class="small muted" id="energyCaption">Energy 80 / 100</div><div class="duebox"><b id="nextCheckinTitle">Your next check-in</b><p id="nextCheckinText">Take a photo to start your streak.</p><p id="countdown" style="color:var(--gold);margin-top:7px"></p></div><div style="display:flex;gap:8px;margin-top:11px"><button class="btn secondary" style="flex:1" id="sleepBtn">🌙 Sleep mode</button><button class="btn secondary" style="flex:1" data-goto="shop">Visit shop</button></div></div></section><section class="panel"><div class="panel-head"><div><h2>Recent activity</h2><p>Your latest little wins.</p></div><button class="btn ghost" style="padding:7px 9px;font-size:10px" data-goto="progress">View all</button></div><div class="side-body"><div class="feed-list" id="recentFeed"></div></div></section></div></div></section>
-<section class="page" id="page-checkin"><div class="section-grid"><section class="panel"><div class="panel-head"><div><h2>Check in</h2><p>Capture a moment, add a note, send it to your Discord webhook.</p></div><span class="level-chip" id="checkinStatusChip">Ready</span></div><div class="content-pad"><div id="checkinNotice" class="notice">Your webhook is saved on this device. Check-in rewards are granted after a successful upload.</div><div class="field"><label>Choose a quick caption</label><div class="preset-row" id="presetRow"><button class="preset active" data-caption="Good morning ☀️">Good Morning</button><button class="preset" data-caption="Study session 📚">Study Session</button><button class="preset" data-caption="Gym done 💪">Gym</button><button class="preset" data-caption="Good night 🌙">Good Night</button><button class="preset" data-caption="Just checking in ✨">Just Checking In</button></div><label for="captionInput">Your caption (editable)</label><textarea id="captionInput" maxlength="1500" placeholder="What are you up to?" rows="3">Just checking in ✨</textarea><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn secondary" id="voiceInputBtn">🎙 Speak caption</button><button class="btn secondary" id="readCaptionBtn">🔊 Read caption</button><button class="btn ghost" id="clearCaptionBtn">Clear</button></div><div class="voice-status" id="voiceStatus">Voice input depends on browser support and may need internet.</div></div><div class="camera-box" id="cameraBox"><div class="camera-placeholder" id="cameraPlaceholder"><div>📷</div><b>Ready when you are</b><p class="small">Start your camera or choose a photo/video from your device.</p></div><video id="cameraVideo" autoplay playsinline muted hidden></video><img id="capturedImage" alt="Captured preview" hidden></div><div class="camera-actions"><button class="btn secondary" id="startCameraBtn">Open camera</button><button class="btn primary" id="takePhotoBtn" disabled>Take photo</button><button class="btn secondary" id="recordVideoBtn" disabled>● Record video</button><button class="btn ghost" id="switchCameraBtn" disabled>Flip camera</button></div><div class="field" style="margin-top:12px"><label for="fileInput">Or choose an existing photo/video</label><input id="fileInput" type="file" accept="image/*,video/*" capture="environment"></div><video id="capturedVideo" controls playsinline hidden style="width:100%;max-height:340px;border-radius:12px;background:#050505"></video><div class="notice" id="mediaInfo">No media selected yet.</div><div class="camera-actions"><button class="btn ghost" id="clearMediaBtn" disabled>Clear media</button><button class="btn primary" id="sendCheckinBtn" disabled>Send check-in ↗</button></div><p class="small muted">Only the media you select/capture and your caption are sent to the configured Discord webhook. A successful upload earns the check-in reward. Discord upload limits apply.</p></div></section><div class="side-stack"><section class="panel"><div class="panel-head"><div><h2>Check-in rules</h2><p>Simple, predictable rewards.</p></div></div><div class="side-body"><div class="feed-list"><div class="feed-entry"><div><b>✦ Sparks</b><p>Earn 1 Spark for each accepted check-in.</p></div><div class="right">+1</div></div><div class="feed-entry"><div><b>⚡ XP</b><p>Earn 10 lifetime XP per accepted check-in.</p></div><div class="right">+10 XP</div></div><div class="feed-entry"><div><b>🔥 Streak</b><p>Check in within each 2-hour window to maintain it.</p></div></div><div class="feed-entry"><div><b>🌙 Sleep mode</b><p>Pause the streak timer for up to 9 hours.</p></div></div></div><div class="notice">No reward is granted just by opening the camera. The upload must succeed first. If Discord is unavailable, your check-in won't be counted.</div><button class="btn secondary" style="width:100%" data-goto="settings">Webhook settings</button></div></section><section class="panel"><div class="panel-head"><div><h2>Streak freeze</h2><p>Protect one missed interval.</p></div></div><div class="side-body"><p class="small muted">Buy a freeze in the shop for 15 Sparks. One freeze is consumed automatically if you miss a single 2-hour check-in window. It won't protect multiple missed windows.</p><button class="btn secondary" style="width:100%" data-goto="shop">Open shop</button></div></section></div></div></section>
-<section class="page" id="page-shop"><div class="layout"><section class="panel"><div class="panel-head"><div><h2>Little shop</h2><p>Build your room, one little upgrade at a time.</p></div><span class="wallet">✦ <b id="shopSparks">0</b></span></div><div class="tabs"><button class="tab active" data-filter="all">Everything</button><button class="tab" data-filter="furniture">Furniture</button><button class="tab" data-filter="decor">Decor</button><button class="tab" data-filter="items">Useful items</button></div><div class="shop-list" id="shopList"></div></section><div class="side-stack"><section class="panel"><div class="panel-head"><div><h2>Your inventory</h2><p>Things you own stay yours.</p></div></div><div class="side-body" id="inventoryBox"></div></section><section class="panel"><div class="panel-head"><div><h2>How Sparks work</h2></div></div><div class="side-body"><p class="small muted">Sparks are spendable shop currency. XP is lifetime progress and never goes down when you buy something. Each level needs twice as much XP as the previous level: 5, then 10, then 20, then 40, and so on.</p></div></section></div></div></section>
-<section class="page" id="page-progress"><div class="section-grid"><section class="panel"><div class="panel-head"><div><h2>Your journey</h2><p>Progress that belongs to you.</p></div><span class="level-chip" id="progressLevel">Level 1</span></div><div class="content-pad"><div class="stat-grid" style="margin-top:0"><div class="stat"><div class="label">LIFETIME XP</div><div class="value" id="progressXP">0</div></div><div class="stat"><div class="label">SPARKS</div><div class="value" id="progressSparks">0</div></div><div class="stat"><div class="label">BEST STREAK</div><div class="value" id="bestStreak">0 🔥</div></div><div class="stat"><div class="label">ROOM ITEMS</div><div class="value" id="progressItems">0</div></div></div><div style="margin-top:19px"><div style="display:flex;justify-content:space-between;gap:10px"><b id="levelProgressTitle">Level 1 progress</b><span class="small muted" id="levelProgressText">0 / 5 XP</span></div><div class="progress"><i id="progressBar"></i></div><p class="small muted" id="levelNextText">5 XP to reach level 2.</p></div><h3 style="font-size:13px;margin:23px 0 10px">Activity history</h3><div class="feed-list" id="historyList"></div></div></section><div class="side-stack"><section class="panel"><div class="panel-head"><div><h2>Your profile</h2><p>Local profile on this device.</p></div></div><div class="side-body"><div class="field"><label for="profileName">Display name</label><input id="profileName" maxlength="32" placeholder="Your name"></div><div class="field"><label for="profileBio">Short status</label><input id="profileBio" maxlength="90" placeholder="Building better days, one check-in at a time."></div><button class="btn primary" id="saveProfileBtn" style="width:100%">Save profile</button><div class="notice">This single-file version stores your profile only in this browser. A genuinely shared online leaderboard and cross-device accounts need a secure backend; this local build does not pretend to sync with other users.</div></div></section><section class="panel"><div class="panel-head"><div><h2>Achievements</h2><p>Little milestones.</p></div></div><div class="side-body" id="achievementsBox"></div></section></div></div></section>
-<section class="page" id="page-settings"><div class="panel"><div class="panel-head"><div><h2>Settings</h2><p>Connections, reminders, voice, and your data.</p></div></div><div class="content-pad"><div class="settings-grid"><section class="settings-card"><h3>Discord webhook</h3><p>Paste a webhook URL for the private channel where check-in media should arrive. It is saved locally on this device.</p><div class="field"><label for="webhookInput">Webhook URL</label><input id="webhookInput" type="password" autocomplete="off" spellcheck="false" placeholder="https://discord.com/api/webhooks/…"></div><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn primary" id="saveWebhookBtn">Save webhook</button><button class="btn secondary" id="showWebhookBtn">Show</button><button class="btn ghost" id="testWebhookBtn">Test</button></div><div id="webhookStatus" class="notice">No webhook configured yet.</div><p class="small muted">Treat this URL like a password. Anyone who gets it may be able to post to your Discord channel. Don't share screenshots of it or publish this file with your webhook inside.</p></section><section class="settings-card"><h3>Sleep mode</h3><p>Pause your streak timer while you sleep. You can set a duration up to 9 hours.</p><div class="field"><label for="sleepDuration">Duration</label><select id="sleepDuration"><option value="1">1 hour</option><option value="2">2 hours</option><option value="4">4 hours</option><option value="6">6 hours</option><option value="8">8 hours</option><option value="9" selected>9 hours</option></select></div><button class="btn secondary" id="startSleepBtn">🌙 Start sleep mode</button><button class="btn ghost" id="endSleepBtn" style="margin-left:5px">End early</button><div id="sleepStatus" class="notice">Sleep mode is off.</div></section><section class="settings-card"><h3>Character voice</h3><p>Read your companion's messages aloud. Uses your browser/device's available speech voices; voice availability varies.</p><div class="toggle-row"><div><b>Speak room messages</b><small>Read a short greeting when you open the room.</small></div><input class="switch" id="autoVoiceToggle" type="checkbox"></div><div class="field" style="margin-top:12px"><label for="voiceSelect">Voice</label><select id="voiceSelect"><option value="">System default</option></select></div><button class="btn secondary" id="testVoiceBtn">▶ Test voice</button></section><section class="settings-card"><h3>Reminders</h3><p>Browser notifications are best-effort and require permission. This page cannot reliably notify you when the browser is fully closed.</p><div class="toggle-row"><div><b>Check-in reminders</b><small>Ask the browser for notification permission.</small></div><input class="switch" id="reminderToggle" type="checkbox"></div><div class="field" style="margin-top:12px"><label for="reminderInterval">Reminder interval</label><select id="reminderInterval"><option value="30">Every 30 minutes</option><option value="60" selected>Every hour</option><option value="120">Every 2 hours</option></select></div><button class="btn secondary" id="permissionBtn">Enable notifications</button><div id="reminderStatus" class="notice">Notifications are off.</div></section><section class="settings-card"><h3>Local data</h3><p>Your progress is stored in this browser. Clearing browser storage or changing browser/device can remove it. Export a backup before resetting.</p><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn secondary" id="exportBtn">Export backup</button><button class="btn secondary" id="importBtn">Import backup</button><input id="importFile" type="file" accept="application/json" hidden><button class="btn danger" id="resetBtn">Reset progress</button></div><div class="notice">Photos/videos are not saved by the app after upload unless you explicitly choose a local file; the webhook URL and game progress remain in local browser storage.</div></section><section class="settings-card"><h3>About this build</h3><p>Single-file local app. Room, shop, inventory, XP, Sparks, streaks, freeze, sleep, captions, camera capture, Discord upload, voice, reminders and backup are included.</p><p>Shared accounts/leaderboard require a backend and are intentionally not simulated. Keep your webhook private.</p></section></div></div></div></section>
-</main><footer class="tiny-footer">Little Room · Your progress is yours. Be kind to yourself on missed days.</footer></div>
-<div class="toast" id="toast" role="status" aria-live="polite"></div><div class="backdrop" id="modalBackdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal" id="modalBox"><div class="modal-icon" id="modalEmoji">✨</div><h2 id="modalTitle">Welcome</h2><p id="modalText">Let's set things up.</p><div id="modalContent"></div><button class="btn primary" id="modalClose">Continue</button></div></div>
+:root {
+  color-scheme: dark;
+  --bg: #09090b;
+  --panel: #151518;
+  --panel2: #202024;
+  --text: #f5f5f5;
+  --muted: #929299;
+  --accent: #ff663d;
+  --border: #29292e;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body {
+  width: 100%; height: 100%; margin: 0;
+  background: var(--bg); color: var(--text);
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  overflow: hidden;
+}
+button, input { font: inherit; }
+button { color: inherit; cursor: pointer; }
+button:disabled { opacity: .45; cursor: not-allowed; }
+#app { position: relative; height: 100%; height: 100dvh; overflow: hidden; }
+#cameraView { position: absolute; inset: 0; background: #000; }
+#camera {
+  width: 100%; height: 100%; object-fit: cover;
+  position: absolute; inset: 0;
+}
+.camera-shade {
+  position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(180deg,rgba(0,0,0,.48),transparent 22%,transparent 70%,rgba(0,0,0,.62));
+}
+.topbar {
+  position: absolute; top: calc(12px + var(--safe-top)); left: 0; right: 0;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 18px; z-index: 3;
+}
+.brand { font-size: 13px; font-weight: 850; letter-spacing: 4px; }
+.icon-btn {
+  width: 43px; height: 43px; display: grid; place-items: center;
+  border: 1px solid #ffffff22; border-radius: 50%;
+  background: #101014aa; backdrop-filter: blur(14px);
+}
+.icon-btn svg { width: 20px; height: 20px; }
+.streak-pill {
+  display: flex; align-items: center; gap: 7px; padding: 10px 13px;
+  border: 1px solid #ffffff25; border-radius: 999px;
+  background: #101014aa; backdrop-filter: blur(14px);
+  font-size: 13px; font-weight: 750;
+}
+.flame { color: var(--accent); width: 17px; height: 17px; }
+#cameraHint {
+  position: absolute; top: 18%; left: 20px; right: 20px;
+  text-align: center; color: #fff; font-size: 13px;
+  text-shadow: 0 1px 8px #000; pointer-events: none;
+}
+.bottom-controls {
+  position: absolute; left: 0; right: 0; bottom: calc(22px + var(--safe-bottom));
+  z-index: 3; display: flex; flex-direction: column;
+  align-items: center; gap: 20px;
+}
+.mode-switch {
+  display: flex; gap: 4px; align-items: center; padding: 4px;
+  background: #101014b8; border: 1px solid #ffffff20;
+  border-radius: 999px; backdrop-filter: blur(14px);
+}
+.mode {
+  border: 0; background: transparent; color: #b8b8bd;
+  padding: 9px 17px; border-radius: 999px;
+  font-size: 12px; font-weight: 750;
+}
+.mode.active { color: #fff; background: #ffffff20; }
+.capture-row {
+  width: 100%; display: flex; justify-content: center;
+  align-items: center; position: relative; min-height: 78px;
+}
+.capture-btn {
+  width: 76px; height: 76px; border-radius: 50%;
+  border: 4px solid #ffffff; background: transparent;
+  display: grid; place-items: center;
+  box-shadow: 0 0 0 2px #0007;
+}
+.capture-inner {
+  width: 60px; height: 60px; border-radius: 50%;
+  background: #fff; transition: border-radius .15s, transform .15s;
+}
+.capture-btn:active .capture-inner { transform: scale(.9); }
+.capture-btn.recording .capture-inner {
+  width: 26px; height: 26px; border-radius: 7px;
+  background: var(--accent);
+}
+.side-action {
+  position: absolute; right: 24px; top: 50%; transform: translateY(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  border: 0; background: transparent; color: #fff; font-size: 11px;
+}
+.side-action svg { width: 22px; height: 22px; }
+#recordingTime {
+  display: none; position: absolute; left: 24px; top: 50%;
+  transform: translateY(-50%); background: #b91c1c;
+  border-radius: 6px; padding: 7px 9px; font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+#recordingTime.visible { display: block; }
+#previewView, #settingsView, #streakView, #setupView {
+  position: absolute; inset: 0; z-index: 10;
+  display: none; flex-direction: column; background: var(--bg);
+}
+#previewView.open, #settingsView.open, #streakView.open,
+#setupView.open { display: flex; }
+.view-header {
+  padding: calc(14px + var(--safe-top)) 20px 14px;
+  display: flex; justify-content: space-between; align-items: center;
+  border-bottom: 1px solid var(--border);
+}
+.view-title { font-size: 15px; font-weight: 750; }
+.close-btn {
+  width: 38px; height: 38px; border-radius: 50%;
+  background: var(--panel); border: 1px solid var(--border);
+  display: grid; place-items: center;
+}
+.close-btn svg { width: 18px; height: 18px; }
+#previewMedia {
+  min-height: 0; flex: 1; width: 100%; object-fit: contain;
+  background: #000;
+}
+.preview-footer {
+  padding: 18px 20px calc(18px + var(--safe-bottom));
+  display: flex; gap: 12px;
+}
+.btn {
+  min-height: 51px; padding: 0 18px; border-radius: 14px;
+  border: 1px solid var(--border); font-size: 13px; font-weight: 750;
+  background: var(--panel); display: flex; align-items: center;
+  justify-content: center; gap: 8px;
+}
+.btn svg { width: 18px; height: 18px; }
+.btn.primary { background: var(--accent); color: #17100d; border-color: var(--accent); }
+.btn.full { width: 100%; }
+.btn.flex { flex: 1; }
+.btn:active { transform: scale(.985); }
+.page-content {
+  flex: 1; min-height: 0; overflow-y: auto;
+  padding: 24px 20px calc(24px + var(--safe-bottom));
+  scrollbar-width: none;
+}
+.page-content::-webkit-scrollbar { display: none; }
+.section-label {
+  color: var(--muted); font-size: 10px; letter-spacing: 2px;
+  font-weight: 800; text-transform: uppercase;
+}
+.setting-card {
+  margin-top: 10px; padding: 16px; border: 1px solid var(--border);
+  background: var(--panel); border-radius: 16px;
+}
+.field-label { display: block; font-size: 12px; color: #c9c9ce; margin-bottom: 10px; }
+.field {
+  display: block; width: 100%; min-width: 0; padding: 14px;
+  color: var(--text); background: #0c0c0f;
+  border: 1px solid #303036; border-radius: 11px; outline: none;
+  font-size: 13px;
+}
+.field:focus { border-color: var(--accent); }
+.field-help { color: var(--muted); font-size: 11px; line-height: 1.6; margin-top: 10px; }
+.setting-row {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; padding: 15px 0; border-bottom: 1px solid var(--border);
+}
+.setting-row:last-child { border-bottom: 0; }
+.row-name { font-size: 13px; font-weight: 650; }
+.row-description { color: var(--muted); font-size: 11px; margin-top: 5px; line-height: 1.5; }
+.row-value { color: var(--muted); font-size: 12px; text-align: right; }
+.streak-hero { padding: 38px 0 30px; text-align: center; }
+.streak-flame {
+  width: 78px; height: 78px; margin: auto auto 17px; color: var(--accent);
+  animation: float 2.5s ease-in-out infinite;
+}
+.streak-number { font-size: 76px; line-height: 1; font-weight: 850; letter-spacing: -5px; }
+.streak-caption { color: var(--muted); font-size: 12px; margin-top: 12px; }
+.stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.stat-card { background: var(--panel); border: 1px solid var(--border); border-radius: 15px; padding: 17px; }
+.stat-number { font-size: 25px; font-weight: 800; margin-top: 9px; }
+.stat-label { font-size: 11px; color: var(--muted); }
+.countdown-card { margin-top: 12px; padding: 18px; background: var(--panel); border: 1px solid var(--border); border-radius: 15px; }
+.countdown-value { font-size: 24px; font-weight: 750; font-variant-numeric: tabular-nums; margin-top: 8px; }
+.progress-track { margin-top: 14px; height: 4px; background: #303036; border-radius: 9px; overflow: hidden; }
+.progress-bar { height: 100%; width: 0%; background: var(--accent); transition: width .4s linear; }
+#toast {
+  position: absolute; z-index: 30; left: 20px; right: 20px;
+  bottom: calc(25px + var(--safe-bottom)); padding: 14px 16px;
+  border: 1px solid #ffffff18; background: #202024f2;
+  border-radius: 13px; font-size: 12px; line-height: 1.5;
+  opacity: 0; transform: translateY(10px); pointer-events: none;
+  transition: opacity .2s, transform .2s;
+}
+#toast.show { opacity: 1; transform: translateY(0); }
+#toast.success { border-color: #267a50; }
+#toast.error { border-color: #a93a3a; }
+#uploadOverlay {
+  position: absolute; inset: 0; z-index: 25; display: none;
+  align-items: center; justify-content: center; flex-direction: column;
+  gap: 15px; background: #09090bf0; padding: 30px; text-align: center;
+}
+#uploadOverlay.open { display: flex; }
+.spinner {
+  width: 36px; height: 36px; border: 3px solid #35353b;
+  border-top-color: var(--accent); border-radius: 50%;
+  animation: spin .7s linear infinite;
+}
+#uploadMessage { font-size: 13px; font-weight: 650; }
+#uploadSubtext { color: var(--muted); font-size: 11px; }
+#celebration {
+  position: absolute; inset: 0; z-index: 20; pointer-events: none;
+  display: none; align-items: center; justify-content: center;
+  flex-direction: column; gap: 10px; background: #09090b30;
+}
+#celebration.show { display: flex; animation: celebrate .9s ease both; }
+.celebration-flame { color: var(--accent); width: 72px; height: 72px; }
+.celebration-text { font-size: 24px; font-weight: 850; text-shadow: 0 2px 20px #000; }
+.celebration-sub { font-size: 12px; color: #eee; }
+.empty-state { text-align: center; color: var(--muted); padding: 24px 0; font-size: 12px; line-height: 1.7; }
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes float { 50% { transform: translateY(-5px); } }
+@keyframes celebrate { 0% { opacity: 0; transform: scale(.7); } 35% { opacity: 1; transform: scale(1.08); } 100% { opacity: 0; transform: scale(1); } }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}
+</style>
+</head>
+
+<body>
+<div id="app">
+
+  <main id="cameraView">
+    <video id="camera" autoplay playsinline muted></video>
+    <div class="camera-shade"></div>
+
+    <header class="topbar">
+      <button class="icon-btn" id="openSettings" aria-label="Settings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path d="m19.4 15 .1.1 1.4 1.1-1.5 2.6-1.7-.6a8 8 0 0 1-1.8 1l-.3 1.8h-3l-.3-1.8a8 8 0 0 1-1.8-1l-1.7.6-1.5-2.6 1.4-1.1a7 7 0 0 1 0-2l-1.4-1.1 1.5-2.6 1.7.6a8 8 0 0 1 1.8-1l.3-1.8h3l.3 1.8a8 8 0 0 1 1.8 1l1.7-.6 1.5 2.6-1.4 1.1a7 7 0 0 1 0 2Z" transform="translate(-1 -1) scale(.95)"></path>
+        </svg>
+      </button>
+
+      <div class="brand">STREAK</div>
+
+      <button class="streak-pill" id="openStreak" aria-label="View streak">
+        <svg class="flame" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M13.5 1.7c.5 4-1.5 5.3-3 7.2C9.2 10.4 9 11.4 9.4 13c-1.8-.9-2.7-2.8-2.4-4.6C4.3 11 3 13.5 3.5 16.1A8.6 8.6 0 0 0 12 23a8.5 8.5 0 0 0 8.5-8.5c0-4.5-3.2-8.5-7-12.8ZM12 20a4.3 4.3 0 0 1-4.3-4.3c0-1.5.8-2.7 2.1-4 .1 1.8 1.2 2.6 2.1 3.1 1.2-1.2 1.7-2.3 1.5-4.2 1.7 1.8 2.8 3.6 2.8 5.3A4.2 4.2 0 0 1 12 20Z"/>
+        </svg>
+        <span id="topStreak">0</span>
+      </button>
+    </header>
+
+    <div id="cameraHint">Capture a moment. Keep your streak alive.</div>
+
+    <div class="bottom-controls">
+      <div class="mode-switch">
+        <button class="mode active" id="photoMode">PHOTO</button>
+        <button class="mode" id="videoMode">VIDEO</button>
+      </div>
+
+      <div class="capture-row">
+        <div id="recordingTime">00:00</div>
+        <button class="capture-btn" id="captureButton" aria-label="Take photo">
+          <span class="capture-inner"></span>
+        </button>
+        <button class="side-action" id="switchCamera" aria-label="Switch camera">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+            <path d="M20 7h-3l-2-3H9L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2Z"/>
+            <circle cx="12" cy="13" r="4"/>
+          </svg>
+          Flip
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <section id="previewView" aria-label="Capture preview">
+    <header class="view-header">
+      <button class="close-btn" id="retakeButton" aria-label="Retake">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M19 12a7 7 0 0 1-12.1 4.8L4 14M5 19v-5h5M5 12a7 7 0 0 1 12.1-4.8L20 10M19 5v5h-5"/></svg>
+      </button>
+      <span class="view-title">Preview</span>
+      <span style="width:38px"></span>
+    </header>
+    <video id="previewMedia" playsinline controls></video>
+    <div class="preview-footer">
+      <button class="btn flex" id="discardButton">Retake</button>
+      <button class="btn primary flex" id="sendButton">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7Z"/></svg>
+        Send to Discord
+      </button>
+    </div>
+  </section>
+
+  <section id="settingsView">
+    <header class="view-header">
+      <button class="close-btn" id="closeSettings" aria-label="Back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m15 18-6-6 6-6"/></svg>
+      </button>
+      <span class="view-title">Settings</span>
+      <span style="width:38px"></span>
+    </header>
+    <div class="page-content">
+      <div class="section-label">Discord connection</div>
+      <div class="setting-card">
+        <label class="field-label" for="webhookInput">Webhook URL</label>
+        <input class="field" id="webhookInput" type="password" placeholder="https://discord.com/api/webhooks/..." autocomplete="off" spellcheck="false">
+        <div class="field-help">Your webhook is stored in this browser's localStorage. Anyone who can access this browser or inspect its storage may be able to retrieve it.</div>
+        <button class="btn primary full" id="saveWebhook" style="margin-top:16px">Save webhook</button>
+        <button class="btn full" id="testWebhook" style="margin-top:9px">Test connection</button>
+      </div>
+
+      <div class="section-label" style="margin-top:28px">App</div>
+      <div class="setting-card">
+        <div class="setting-row">
+          <div><div class="row-name">Check-in interval</div><div class="row-description">Time between successful uploads</div></div>
+          <div class="row-value">2 hours</div>
+        </div>
+        <div class="setting-row">
+          <div><div class="row-name">Upload history</div><div class="row-description">No photo or video gallery is saved</div></div>
+          <div class="row-value">Off</div>
+        </div>
+        <div class="setting-row">
+          <div><div class="row-name">Streak data</div><div class="row-description">Stored locally on this device</div></div>
+          <div class="row-value">Local</div>
+        </div>
+      </div>
+      <p class="field-help">Clearing this site's storage or using another browser can remove your streak data. Keep this app's site data if you want to preserve it.</p>
+    </div>
+  </section>
+
+  <section id="streakView">
+    <header class="view-header">
+      <button class="close-btn" id="closeStreak" aria-label="Back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m15 18-6-6 6-6"/></svg>
+      </button>
+      <span class="view-title">Your streak</span>
+      <span style="width:38px"></span>
+    </header>
+    <div class="page-content">
+      <div class="streak-hero">
+        <svg class="streak-flame" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M13.5 1.7c.5 4-1.5 5.3-3 7.2C9.2 10.4 9 11.4 9.4 13c-1.8-.9-2.7-2.8-2.4-4.6C4.3 11 3 13.5 3.5 16.1A8.6 8.6 0 0 0 12 23a8.5 8.5 0 0 0 8.5-8.5c0-4.5-3.2-8.5-7-12.8ZM12 20a4.3 4.3 0 0 1-4.3-4.3c0-1.5.8-2.7 2.1-4 .1 1.8 1.2 2.6 2.1 3.1 1.2-1.2 1.7-2.3 1.5-4.2 1.7 1.8 2.8 3.6 2.8 5.3A4.2 4.2 0 0 1 12 20Z"/>
+        </svg>
+        <div class="streak-number" id="streakNumber">0</div>
+        <div class="streak-caption">successful uploads in your current streak</div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-label">BEST STREAK</div>
+          <div class="stat-number" id="bestStreak">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">TOTAL UPLOADS</div>
+          <div class="stat-number" id="totalUploads">0</div>
+        </div>
+      </div>
+
+      <div class="countdown-card">
+        <div class="section-label">NEXT CHECK-IN DEADLINE</div>
+        <div class="countdown-value" id="countdown">--:--:--</div>
+        <div class="field-help" id="deadlineMessage">A successful upload starts your two-hour window.</div>
+        <div class="progress-track"><div class="progress-bar" id="deadlineProgress"></div></div>
+      </div>
+
+      <button class="btn primary full" id="backToCamera" style="margin-top:18px">Back to camera</button>
+    </div>
+  </section>
+
+  <section id="setupView">
+    <div class="page-content" style="display:flex;flex-direction:column;justify-content:center">
+      <div style="font-size:11px;letter-spacing:4px;font-weight:850;margin-bottom:22px">STREAK</div>
+      <div style="font-size:32px;line-height:1.15;font-weight:850;letter-spacing:-1px">Every moment<br>counts.</div>
+      <p style="font-size:13px;line-height:1.7;color:var(--muted);margin:16px 0 28px">Connect Discord to start. Each successful photo or video upload increases your streak.</p>
+      <label class="field-label" for="setupWebhook">Discord webhook URL</label>
+      <input class="field" id="setupWebhook" type="password" placeholder="https://discord.com/api/webhooks/..." autocomplete="off" spellcheck="false">
+      <p class="field-help">Create a webhook in your Discord channel's integrations settings. Keep the URL private.</p>
+      <button class="btn primary full" id="connectDiscord" style="margin-top:16px">Connect Discord</button>
+      <button class="btn full" id="skipSetup" style="margin-top:9px">Continue without connecting</button>
+    </div>
+  </section>
+
+  <div id="uploadOverlay">
+    <div class="spinner" id="uploadSpinner"></div>
+    <div id="uploadMessage">Sending to Discord…</div>
+    <div id="uploadSubtext">Your streak changes only after a successful upload.</div>
+  </div>
+
+  <div id="celebration">
+    <svg class="celebration-flame" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M13.5 1.7c.5 4-1.5 5.3-3 7.2C9.2 10.4 9 11.4 9.4 13c-1.8-.9-2.7-2.8-2.4-4.6C4.3 11 3 13.5 3.5 16.1A8.6 8.6 0 0 0 12 23a8.5 8.5 0 0 0 8.5-8.5c0-4.5-3.2-8.5-7-12.8Z"/>
+    </svg>
+    <div class="celebration-text" id="celebrationText">Streak increased!</div>
+    <div class="celebration-sub" id="celebrationSub">Successfully sent to Discord</div>
+  </div>
+
+  <div id="toast" role="status" aria-live="polite"></div>
+</div>
+
 <script>
-(()=>{'use strict';
-const STORE='little-room-full-v1',HOUR=3600000,INTERVAL=2*HOUR,MAX_SLEEP=9*HOUR;
-const items=[
-{id:'plant',name:'Little plant',category:'decor',price:5,desc:'A tiny bit of green.',kind:'plant',w:56,x:16,y:82},{id:'lamp',name:'Warm lamp',category:'decor',price:10,desc:'A softer evening glow.',kind:'lamp',w:60,x:84,y:83},{id:'chair',name:'Comfy chair',category:'furniture',price:15,desc:'A place to sit and rest.',kind:'chair',w:100,x:70,y:84},{id:'table',name:'Wooden table',category:'furniture',price:25,desc:'A proper spot for your things.',kind:'table',w:142,x:47,y:84},{id:'bookshelf',name:'Bookshelf',category:'furniture',price:30,desc:'A home for little adventures.',kind:'bookshelf',w:88,x:89,y:66},{id:'bed',name:'Cosy bed',category:'furniture',price:40,desc:'Somewhere to get good rest.',kind:'bed',w:170,x:24,y:85},{id:'laptop',name:'Little laptop',category:'furniture',price:35,desc:'A tiny workstation upgrade.',kind:'laptop',w:58,x:48,y:62},{id:'rug',name:'Soft rug',category:'decor',price:20,desc:'Makes the room feel warmer.',kind:'rug',w:190,x:52,y:91},{id:'picture',name:'Wall art',category:'decor',price:18,desc:'A little personality for the wall.',kind:'picture',w:65,x:62,y:39},{id:'freeze',name:'Streak freeze',category:'items',price:15,desc:'Protect one missed 2-hour interval.',kind:'freeze'},{id:'potion',name:'Energy potion',category:'items',price:8,desc:'Restore 35 energy and brighten the mood.',kind:'potion'}];
-const svg={plant:`<svg class="item-svg" viewBox="0 0 70 78"><path d="M22 48Q7 24 20 18Q36 28 29 48" fill="#76a777"/><path d="M33 49Q34 12 51 14Q59 35 37 52" fill="#4f8962"/><path d="M31 47Q15 35 11 42Q17 56 32 54" fill="#91bd7d"/><path d="M20 50H47L43 72H24Z" fill="#c97956"/><path d="M19 50H48L46 56H21Z" fill="#e9a174"/></svg>`,lamp:`<svg class="item-svg" viewBox="0 0 70 78"><path d="M20 29L28 9H48L56 29Z" fill="#f5c87c"/><path d="M38 29V61" stroke="#a8794f" stroke-width="5"/><ellipse cx="38" cy="65" rx="17" ry="5" fill="#b88961"/><path d="M19 31H57" stroke="#fff0bd" stroke-width="3"/><circle cx="38" cy="31" r="5" fill="#fff0bd"/></svg>`,chair:`<svg class="item-svg" viewBox="0 0 100 90"><path d="M24 17Q24 12 30 12H68Q74 12 74 18V49H24Z" fill="#d38a58" stroke="#89583e" stroke-width="3"/><rect x="21" y="43" width="58" height="17" rx="5" fill="#e8ad77" stroke="#89583e" stroke-width="3"/><path d="M29 60L25 82M70 60L75 82" stroke="#89583e" stroke-width="6" stroke-linecap="round"/></svg>`,table:`<svg class="item-svg" viewBox="0 0 150 90"><path d="M14 28H136L127 44H23Z" fill="#d8a06b" stroke="#875a3c" stroke-width="3"/><path d="M27 44L32 83M122 44L117 83" stroke="#98623e" stroke-width="9" stroke-linecap="round"/><path d="M14 28L22 19H129L136 28" fill="#edbd88" stroke="#875a3c" stroke-width="3"/></svg>`,bookshelf:`<svg class="item-svg" viewBox="0 0 90 110"><rect x="12" y="7" width="66" height="96" rx="3" fill="#a76d4a" stroke="#744a35" stroke-width="4"/><path d="M15 39H75M15 69H75" stroke="#744a35" stroke-width="4"/><path d="M20 13H30V34H20ZM35 11H46V34H35ZM51 16H63V34H51Z" fill="#e7c37e"/><path d="M21 44H31V64H21ZM36 43H47V64H36ZM53 46H69V64H53Z" fill="#86a7a0"/><path d="M20 74H33V98H20ZM39 76H48V98H39ZM54 72H69V98H54Z" fill="#d98b67"/></svg>`,bed:`<svg class="item-svg" viewBox="0 0 180 100"><rect x="8" y="38" width="164" height="45" rx="8" fill="#b57959" stroke="#81533e" stroke-width="4"/><rect x="17" y="44" width="146" height="34" rx="5" fill="#f0dfc9"/><rect x="17" y="44" width="49" height="25" rx="7" fill="#a7b7c0"/><path d="M10 79V94M170 79V94" stroke="#81533e" stroke-width="7" stroke-linecap="round"/><path d="M8 38V82M172 38V82" stroke="#9a6548" stroke-width="7"/></svg>`,laptop:`<svg class="item-svg" viewBox="0 0 80 70"><path d="M18 13Q18 9 23 9H58Q62 9 62 14V47H18Z" fill="#9ba9b3" stroke="#59646c" stroke-width="3"/><rect x="23" y="14" width="34" height="27" rx="2" fill="#9bc7ca"/><path d="M8 49H72L65 58H15Z" fill="#c5d0d4" stroke="#59646c" stroke-width="3"/><path d="M31 52H49" stroke="#7c878d" stroke-width="2"/></svg>`,rug:`<svg class="item-svg" viewBox="0 0 200 70"><ellipse cx="100" cy="35" rx="91" ry="28" fill="#b66c56"/><ellipse cx="100" cy="35" rx="75" ry="19" fill="none" stroke="#e9b38b" stroke-width="3" stroke-dasharray="4 5"/><ellipse cx="100" cy="35" rx="54" ry="12" fill="none" stroke="#e9b38b" stroke-width="2"/></svg>`,picture:`<svg class="item-svg" viewBox="0 0 80 90"><rect x="8" y="6" width="64" height="78" rx="2" fill="#f0d6ad" stroke="#a77855" stroke-width="5"/><circle cx="48" cy="28" r="9" fill="#e6a85d"/><path d="M15 72L34 43L44 55L54 42L66 72Z" fill="#6d9b79"/><path d="M15 72H66" stroke="#52765d" stroke-width="3"/></svg>`};
-const $=id=>document.getElementById(id);const now=()=>Date.now();const safeInt=(n,min=0)=>Number.isFinite(Number(n))?Math.max(min,Math.floor(Number(n))):min;
-function fresh(){return {version:1,profile:{name:'',bio:''},sparks:0,xp:0,owned:[],inventory:{freeze:0,potion:0},checkins:0,streak:0,bestStreak:0,lastCheckinAt:0,nextDueAt:0,windowDeadlineAt:0,sleepUntil:0,sleepStartedAt:0,energy:80,lastEnergyAt:now(),history:[],webhook:'',autoVoice:false,reminders:false,reminderInterval:60,lastReminderAt:0,caption:'Just checking in ✨',voiceName:'',achievements:[],firstRunDone:false}}
-function normalize(s){const d=fresh();if(!s||typeof s!=='object')return d;return {...d,...s,profile:{...d.profile,...(s.profile||{})},inventory:{...d.inventory,...(s.inventory||{})},owned:Array.isArray(s.owned)?[...new Set(s.owned.filter(id=>items.some(i=>i.id===id&&i.category!=='items')))]:[],history:Array.isArray(s.history)?s.history.filter(x=>x&&typeof x==='object').slice(0,100):[],achievements:Array.isArray(s.achievements)?s.achievements:[],sparks:safeInt(s.sparks),xp:safeInt(s.xp),checkins:safeInt(s.checkins),streak:safeInt(s.streak),bestStreak:safeInt(s.bestStreak),energy:Math.min(100,safeInt(s.energy)),sleepUntil:safeInt(s.sleepUntil),sleepStartedAt:safeInt(s.sleepStartedAt),lastCheckinAt:safeInt(s.lastCheckinAt),nextDueAt:safeInt(s.nextDueAt),windowDeadlineAt:safeInt(s.windowDeadlineAt),webhook:typeof s.webhook==='string'?s.webhook:'',firstRunDone:!!s.firstRunDone}}
-let state;try{state=normalize(JSON.parse(localStorage.getItem(STORE)||'null'))}catch{state=fresh()}let shopFilter='all',mediaBlob=null,mediaKind='',mediaName='',mediaUrl='',stream=null,mediaRecorder=null,recordChunks=[],recording=false,activeFacing='environment',timer=null;
-function save(){try{localStorage.setItem(STORE,JSON.stringify(state))}catch(e){toast('Could not save local progress. Export a backup and check browser storage.')}}function toast(msg){const el=$('toast');el.textContent=msg;el.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>el.classList.remove('show'),2600)}function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function modal(emoji,title,text,content='',closeLabel='Continue',onClose=null){$('modalEmoji').textContent=emoji;$('modalTitle').textContent=title;$('modalText').textContent=text;$('modalContent').innerHTML=content;$('modalClose').textContent=closeLabel;$('modalBackdrop').classList.add('show');$('modalClose').onclick=()=>{ $('modalBackdrop').classList.remove('show');if(onClose)onClose() }}
-function showPage(name){document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id==='page-'+name));document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===name));if(name==='checkin'&&!state.webhook){setTimeout(()=>showPage('settings'),250);webhookSetupModal()}window.scrollTo({top:0,behavior:'smooth'})}
-document.querySelectorAll('.nav button').forEach(b=>b.addEventListener('click',()=>showPage(b.dataset.page)));document.querySelectorAll('[data-goto]').forEach(b=>b.addEventListener('click',()=>showPage(b.dataset.goto)));$('quickSettings').onclick=()=>showPage('settings');
-function levelInfo(xp=state.xp){let level=1,remaining=xp,need=5,total=0;while(remaining>=need&&level<1000){remaining-=need;total+=need;level++;need*=2;if(!Number.isFinite(need))break}return {level,into:remaining,need:Number.isFinite(need)?need:Infinity,total}}
-function currentMood(){const sleeping=state.sleepUntil>now();if(sleeping)return {name:'Sleeping peacefully',emoji:'😴',desc:'Rest is part of the journey.',label:'Taking a little rest.'};if(state.energy<25)return {name:'Low energy',emoji:'🥱',desc:'A little rest or a potion could help.',label:'Running low on energy.'};if(state.streak>=7)return {name:'On a roll',emoji:'🤩',desc:'A week of showing up. Nice work.',label:'Look at you, showing up.'};if(state.streak>=3)return {name:'Proud',emoji:'😊',desc:'Your steady effort is adding up.',label:'Proud of your progress.'};if(state.owned.includes('bed'))return {name:'Cosy',emoji:'😌',desc:'This place is starting to feel like home.',label:'Feeling cosy.'};if(state.checkins>0)return {name:'Feeling good',emoji:'🙂',desc:'Thanks for checking in.',label:'Good to see you again.'};return {name:'Hopeful',emoji:'🙂',desc:'Ready to see you when you are.',label:'Feeling hopeful.'}}
-function maybeAchievement(id,title,desc){if(state.achievements.includes(id))return;state.achievements.push(id);addHistory('achievement',title,desc,0);toast('Achievement unlocked: '+title)}
-function updateAchievements(){if(state.checkins>=1)maybeAchievement('first','First hello','Your first successful check-in.');if(state.checkins>=10)maybeAchievement('ten','Showing up','10 successful check-ins.');if(state.streak>=3)maybeAchievement('streak3','Three in a row','Reached a 3-check-in streak.');if(state.streak>=7)maybeAchievement('streak7','A whole week','Reached a 7-check-in streak.');if(state.owned.length>=5)maybeAchievement('decorator','Making it home','Owned 5 room items.');if(levelInfo().level>=5)maybeAchievement('level5','Getting stronger','Reached level 5.')}
-function addHistory(type,title,detail,reward=0){state.history.unshift({type,title,detail,reward,at:now()});state.history=state.history.slice(0,100)}
-function energyUpdate(){const t=now();if(!state.lastEnergyAt){state.lastEnergyAt=t;return}const elapsed=Math.max(0,t-state.lastEnergyAt);if(!elapsed)return;if(state.sleepUntil>t){const points=Math.floor(elapsed/(HOUR/8));if(points>0){state.energy=Math.min(100,state.energy+points);state.lastEnergyAt+=points*(HOUR/8)}}else{const points=Math.floor(elapsed/(HOUR/1.5));if(points>0){state.energy=Math.max(0,state.energy-points);state.lastEnergyAt+=points*(HOUR/1.5)}}}
-function processDeadline(){const t=now();if(state.sleepUntil&&t>=state.sleepUntil){const slept=Math.min(MAX_SLEEP,Math.max(0,state.sleepUntil-(state.sleepStartedAt||state.sleepUntil-MAX_SLEEP)));if(state.nextDueAt)state.nextDueAt+=slept;if(state.windowDeadlineAt)state.windowDeadlineAt+=slept;state.sleepUntil=0;state.sleepStartedAt=0;state.energy=Math.min(100,state.energy+Math.floor(slept/HOUR*8));state.lastEnergyAt=t;addHistory('sleep','Woke up','Sleep mode ended. Welcome back.',0)}if(state.sleepUntil>t)return;if(!state.lastCheckinAt||!state.windowDeadlineAt||t<=state.windowDeadlineAt)return;const missed=Math.floor((t-state.windowDeadlineAt)/INTERVAL)+1;if(missed===1&&state.inventory.freeze>0){state.inventory.freeze--;state.windowDeadlineAt+=INTERVAL;addHistory('freeze','Streak freeze used','One missed check-in window was protected.',0)}else{if(state.streak>0)addHistory('streak','Streak ended','A new streak can start any time.',0);state.streak=0;state.nextDueAt=0;state.windowDeadlineAt=0}}
-function tick(){processDeadline();energyUpdate();save();renderAll();}
-function fmtTime(ms){if(ms<=0)return 'now';const total=Math.ceil(ms/60000),h=Math.floor(total/60),m=total%60;return h?`${h}h ${m}m`:`${m}m`}
-function renderRoom(){const layer=$('furnitureLayer');layer.innerHTML='';const owned=items.filter(i=>state.owned.includes(i.id)).sort((a,b)=>(a.kind==='rug'?-1:0)-(b.kind==='rug'?-1:0));owned.forEach(i=>{const n=document.createElement('div');n.className='room-item';n.style.left=i.x+'%';n.style.top=i.y+'%';n.style.width=i.w+'px';n.style.height=(i.kind==='rug'?Math.round(i.w*.35):Math.round(i.w*.85))+'px';n.innerHTML=svg[i.kind]||'';n.setAttribute('aria-label',i.name);n.title=i.name;layer.appendChild(n)});const mood=currentMood(),c=$('character');c.classList.toggle('sleeping',state.sleepUntil>now());c.classList.toggle('low',state.energy<25);$('moodLabel').textContent=mood.label;$('roomMessage').textContent=state.sleepUntil>now()?'Shhh… recharging for a bit.':state.streak>=3?'Look what we are building together!':state.checkins?'Thanks for helping me out.':"Let's build our room.";$('moodEmoji').textContent=mood.emoji;$('moodFace').textContent=mood.emoji;$('moodTitle').textContent=mood.name;$('moodDescription').textContent=mood.desc;$('energyCaption').textContent='Energy '+state.energy+' / 100';$('sideEnergyBar').style.width=state.energy+'%';$('sideEnergyBar').style.background=state.energy<25?'#e47d72':'#91c99d';$('statEnergy').textContent=state.energy+'%';$('energyBar').style.width=state.energy+'%';$('roomItemCount').textContent=owned.length+' item'+(owned.length===1?'':'s');$('roomSubtitle').textContent=!owned.length?"A fresh start. Let's make it feel like home.":owned.length<4?'Little by little, this is becoming a home.':'Your room is getting cosy.';$('roomHint').textContent=state.sleepUntil>now()?'Sleep mode is on · your timer is paused.':'Every successful check-in helps your little home grow.'}
-function renderShop(){const list=$('shopList');list.innerHTML='';items.filter(i=>shopFilter==='all'||i.category===shopFilter).forEach(i=>{const owned=i.category==='items'?false:state.owned.includes(i.id),count=i.id==='freeze'?state.inventory.freeze:i.id==='potion'?state.inventory.potion:0,card=document.createElement('article');card.className='item-card'+(owned?' owned':'');const art=document.createElement('div');art.className='art';art.innerHTML=i.kind==='freeze'?'<div style="font-size:30px">🧊</div>':svg[i.kind];const info=document.createElement('div');info.className='info';const title=document.createElement('h3');title.textContent=i.name;const desc=document.createElement('p');desc.textContent=i.desc;const bottom=document.createElement('div');bottom.className='bottom';const price=document.createElement('span');price.className=owned?'owned-label':'price';price.textContent=owned?'✓ Owned':count?'In bag: '+count:'✦ '+i.price;const btn=document.createElement('button');btn.className='buy';btn.textContent=owned?'Owned':'Buy';btn.disabled=owned||state.sparks<i.price;btn.addEventListener('click',()=>buyItem(i.id));bottom.append(price,btn);info.append(title,desc,bottom);card.append(art,info);list.appendChild(card)});$('shopSparks').textContent=state.sparks;renderInventory()}
-function buyItem(id){const i=items.find(x=>x.id===id);if(!i||state.sparks<i.price){toast('Not enough Sparks yet.');return}if(i.category!=='items'&&state.owned.includes(id)){toast('You already own this.');return}state.sparks-=i.price;if(id==='freeze')state.inventory.freeze++;else if(id==='potion')state.inventory.potion++;else state.owned.push(id);addHistory('purchase','Bought '+i.name,'Added to your inventory.',-i.price);updateAchievements();save();renderAll();animateCharacter();modal(id==='freeze'?'🧊':id==='potion'?'🧪':'🎉',id==='freeze'?'A little backup!':id==='potion'?'A little boost!':'A little more like home!',id==='freeze'?'Streak freeze added to your inventory.':id==='potion'?'Energy potion added to your inventory. Use it whenever you want.':i.name+' is now yours. You have '+state.sparks+' Sparks left.');}
-function renderInventory(){const el=$('inventoryBox');const count=state.inventory.freeze||0;const potions=state.inventory.potion||0;el.innerHTML=`<div class="feed-entry"><div><b>🧊 Streak freeze</b><p>Protects one missed interval.</p></div><div class="right">${count} owned</div></div><div class="feed-entry" style="margin-top:9px"><div><b>🧪 Energy potion</b><p>Restore 35 energy.</p></div><div class="right">${potions} owned</div></div><button class="btn secondary" id="usePotionBtn" style="width:100%;margin-top:10px" ${potions?'':'disabled'}>Use energy potion</button><p class="small muted" style="margin:11px 0 0">Furniture and decor already placed in your room are permanent.</p>`;const use=$('usePotionBtn');if(use)use.onclick=()=>{if(!state.inventory.potion)return;state.inventory.potion--;state.energy=Math.min(100,state.energy+35);state.lastEnergyAt=now();addHistory('potion','Used energy potion','Your companion feels a little brighter.',0);save();renderAll();animateCharacter();toast('Energy restored. Take it at your own pace.')}}
-function renderFeed(){const el=$('recentFeed'),history=state.history.slice(0,3);el.innerHTML='';if(!history.length){el.innerHTML='<div class="empty">Your first little win will appear here.</div>';return}history.forEach(h=>{const n=document.createElement('div');n.className='feed-entry';n.innerHTML=`<div><b>${escapeHtml(h.title)}</b><p>${escapeHtml(h.detail||'')} · ${new Date(h.at).toLocaleString()}</p></div><div class="right">${h.reward>0?'+'+h.reward:h.reward<0?String(h.reward):''}</div>`;el.appendChild(n)})}
-function renderProgress(){const l=levelInfo();$('topLevel').textContent=l.level;$('topXP').textContent=state.xp+' XP';$('topSparks').textContent=state.sparks;$('statStreak').textContent=state.streak+' 🔥';$('streakSub').textContent=state.streak?'Keep the next window alive':'Start your first check-in';$('statXP').textContent=state.xp;$('xpSub').textContent=`Level ${l.level} · ${l.into} / ${l.need} XP`;const pct=l.need===Infinity?100:Math.min(100,l.into/l.need*100);$('xpBar').style.width=pct+'%';$('statCheckins').textContent=state.checkins;$('progressLevel').textContent='Level '+l.level;$('progressXP').textContent=state.xp;$('progressSparks').textContent=state.sparks;$('bestStreak').textContent=state.bestStreak+' 🔥';$('progressItems').textContent=state.owned.length;$('levelProgressTitle').textContent='Level '+l.level+' progress';$('levelProgressText').textContent=`${l.into} / ${l.need===Infinity?'∞':l.need} XP`; $('progressBar').style.width=pct+'%';$('levelNextText').textContent=l.need===Infinity?'You have reached the upper display limit.':`${l.need-l.into} XP to reach level ${l.level+1}.`;const hist=$('historyList');hist.innerHTML='';if(!state.history.length)hist.innerHTML='<div class="empty">No activity yet. Your first successful check-in starts the story.</div>';else state.history.forEach(h=>{const n=document.createElement('div');n.className='feed-entry';n.innerHTML=`<div><b>${escapeHtml(h.title)}</b><p>${escapeHtml(h.detail||'')} · ${new Date(h.at).toLocaleString()}</p></div><div class="right">${h.reward>0?'+'+h.reward:h.reward<0?String(h.reward):''}</div>`;hist.appendChild(n)});const ach=$('achievementsBox');ach.innerHTML='';const all=[['first','First hello','Complete one successful check-in.'],['ten','Showing up','Complete 10 successful check-ins.'],['streak3','Three in a row','Reach a 3-check-in streak.'],['streak7','A whole week','Reach a 7-check-in streak.'],['decorator','Making it home','Own 5 room items.'],['level5','Getting stronger','Reach level 5.']];all.forEach(a=>{const d=document.createElement('div');d.className='feed-entry';d.innerHTML=`<div><b>${state.achievements.includes(a[0])?'🏆':'🔒'} ${a[1]}</b><p>${a[2]}</p></div><div class="right">${state.achievements.includes(a[0])?'Unlocked':''}</div>`;ach.appendChild(d)})}
-function renderClock(){const t=now();if(state.sleepUntil>t){$('nextCheckinTitle').textContent='Sleep mode is on 🌙';$('nextCheckinText').textContent='Your streak timer is paused until sleep mode ends.';$('countdown').textContent='Wake in '+fmtTime(state.sleepUntil-t);$('sleepBtn').textContent='End sleep mode';$('sleepStatus').textContent='Sleep mode active until '+new Date(state.sleepUntil).toLocaleTimeString();$('endSleepBtn').disabled=false}else if(state.nextDueAt){if(t<state.nextDueAt){$('nextCheckinTitle').textContent='Next check-in not ready yet';$('nextCheckinText').textContent='Your next reward becomes available when this timer reaches zero.';$('countdown').textContent='Available in '+fmtTime(state.nextDueAt-t)}else if(t<=state.windowDeadlineAt){$('nextCheckinTitle').textContent='Check-in window is open';$('nextCheckinText').textContent='Check in now to keep your streak going.';$('countdown').textContent='Window closes in '+fmtTime(state.windowDeadlineAt-t)}else{$('nextCheckinTitle').textContent='Check-in window missed';$('nextCheckinText').textContent=state.inventory.freeze>0?'A freeze can protect one missed window.':'Your streak will reset when you return.';$('countdown').textContent='Overdue by '+fmtTime(t-state.windowDeadlineAt)}$('sleepBtn').textContent='🌙 Sleep mode';$('sleepStatus').textContent='Sleep mode is off.';$('endSleepBtn').disabled=true}else{$('nextCheckinTitle').textContent='Your first check-in';$('nextCheckinText').textContent='Send a photo or video to begin your streak.';$('countdown').textContent='';$('sleepBtn').textContent='🌙 Sleep mode';$('sleepStatus').textContent='Sleep mode is off.';$('endSleepBtn').disabled=true}if(state.webhook){$('webhookStatus').className='notice good';$('webhookStatus').textContent='Webhook saved on this device.'}else{$('webhookStatus').className='notice bad';$('webhookStatus').textContent='No webhook configured. Add one before your first check-in.'}if(state.reminders){$('reminderStatus').textContent='Reminders enabled in this page while it is open.'}else{$('reminderStatus').textContent='Notifications are off.'}}
-function renderAll(){renderRoom();renderProgress();renderShop();renderFeed();renderClock()}
-function animateCharacter(){const c=$('character');c.classList.remove('happy');void c.offsetWidth;c.classList.add('happy')}
-// Navigation and shop filters
-document.querySelectorAll('.tabs .tab').forEach(b=>b.addEventListener('click',()=>{shopFilter=b.dataset.filter;document.querySelectorAll('.tabs .tab').forEach(x=>x.classList.toggle('active',x===b));renderShop()}));
-// Webhook settings; always validate host and URL shape before use.
-function validWebhook(v){try{const u=new URL(v);return u.protocol==='https:'&&(u.hostname==='discord.com'||u.hostname==='discordapp.com'||u.hostname==='canary.discord.com'||u.hostname==='ptb.discord.com')&&u.pathname.startsWith('/api/webhooks/')&&u.pathname.split('/').filter(Boolean).length>=4}catch{return false}}
-function webhookSetupModal(){modal('🔗','Connect your Discord webhook','Paste the webhook URL for the private channel where you want your check-ins to arrive. You can change it later in Settings.',`<div class="field" style="text-align:left;margin-top:12px"><label for="firstWebhook">Discord webhook URL</label><input id="firstWebhook" type="password" autocomplete="off" placeholder="https://discord.com/api/webhooks/…"></div><p class="small" style="text-align:left">Keep this URL private. It can allow others to post to your channel.</p>`,'Save webhook',()=>{const v=$('firstWebhook')?.value?.trim();if(v){if(!validWebhook(v)){toast('That does not look like a valid Discord webhook URL.');webhookSetupModal();return}state.webhook=v;save();$('webhookInput').value=v;toast('Webhook saved on this device.');renderAll()}else if(!state.webhook){toast('Webhook not saved. Add it in Settings before checking in.');showPage('settings')}})}
-$('saveWebhookBtn').onclick=()=>{const v=$('webhookInput').value.trim();if(!validWebhook(v)){toast('Enter a valid Discord webhook URL.');return}state.webhook=v;save();renderClock();toast('Webhook saved on this device.')};$('showWebhookBtn').onclick=()=>{$('webhookInput').type=$('webhookInput').type==='password'?'text':'password';$('showWebhookBtn').textContent=$('webhookInput').type==='password'?'Show':'Hide'};
-$('testWebhookBtn').onclick=async()=>{if(!validWebhook(state.webhook)){toast('Save a valid webhook first.');return}const b=$('testWebhookBtn');b.disabled=true;b.textContent='Testing…';try{const r=await fetch(state.webhook,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({content:'🔗 Little Room webhook test. If you can see this, the connection works.'})});if(!r.ok)throw new Error('Discord returned '+r.status);toast('Test message sent to Discord.');}catch(e){toast('Test failed. Check the URL, internet, and Discord channel permissions.')}finally{b.disabled=false;b.textContent='Test'}};
-// Caption presets and speech
-document.querySelectorAll('.preset').forEach(b=>b.onclick=()=>{document.querySelectorAll('.preset').forEach(x=>x.classList.toggle('active',x===b));$('captionInput').value=b.dataset.caption;state.caption=b.dataset.caption;save()});$('captionInput').addEventListener('input',()=>{state.caption=$('captionInput').value;document.querySelectorAll('.preset').forEach(x=>x.classList.toggle('active',x.dataset.caption===$('captionInput').value));save()});$('clearCaptionBtn').onclick=()=>{$('captionInput').value='';state.caption='';save()};
-function speak(text){if(!('speechSynthesis'in window)){toast('Text-to-speech is not supported in this browser.');return}window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);const voices=window.speechSynthesis.getVoices();const chosen=voices.find(v=>v.name===state.voiceName);if(chosen)u.voice=chosen;u.rate=.95;window.speechSynthesis.speak(u)}$('readCaptionBtn').onclick=()=>speak($('captionInput').value||'Just checking in.');$('testVoiceBtn').onclick=()=>speak('Hello. I am happy you are here. One little step at a time.');$('autoVoiceToggle').checked=state.autoVoice;$('autoVoiceToggle').onchange=()=>{state.autoVoice=$('autoVoiceToggle').checked;save()};function fillVoices(){const select=$('voiceSelect'),old=state.voiceName;select.innerHTML='<option value="">System default</option>';if(!('speechSynthesis'in window))return;window.speechSynthesis.getVoices().forEach(v=>{const o=document.createElement('option');o.value=v.name;o.textContent=v.name+' · '+v.lang;select.appendChild(o)});select.value=old}if('speechSynthesis'in window){fillVoices();window.speechSynthesis.onvoiceschanged=fillVoices}$('voiceSelect').onchange=()=>{state.voiceName=$('voiceSelect').value;save()};
-$('voiceInputBtn').onclick=()=>{const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){$('voiceStatus').textContent='Speech recognition is not supported here. Try Chrome or type your caption.';toast('Voice input is not supported in this browser.');return}const rec=new SR();rec.lang=navigator.language||'en-IN';rec.interimResults=false;rec.maxAlternatives=1;$('voiceInputBtn').disabled=true;$('voiceStatus').textContent='Listening… speak now.';rec.onresult=e=>{const text=e.results?.[0]?.[0]?.transcript||'';if(text){$('captionInput').value=($('captionInput').value.trim()?$('captionInput').value.trim()+' ':'')+text;state.caption=$('captionInput').value;save()}$('voiceStatus').textContent='Voice caption added.'};rec.onerror=e=>{$('voiceStatus').textContent='Voice input stopped: '+(e.error||'unknown error')+'. You can type instead.'};rec.onend=()=>{$('voiceInputBtn').disabled=false};try{rec.start()}catch{$('voiceInputBtn').disabled=false;$('voiceStatus').textContent='Could not start the microphone. Check browser permission.'}};
-// Camera, photo capture, video recording, and local file selection.
-const video=$('cameraVideo'),image=$('capturedImage'),videoPreview=$('capturedVideo');function stopCamera(){if(stream){stream.getTracks().forEach(t=>t.stop());stream=null}video.srcObject=null;$('startCameraBtn').textContent='Open camera';$('takePhotoBtn').disabled=true;$('recordVideoBtn').disabled=true;$('switchCameraBtn').disabled=true}
-async function startCamera(){try{if(!navigator.mediaDevices?.getUserMedia)throw new Error('Camera API unavailable. Open this file in a modern browser on localhost/HTTPS, or choose a file instead.');stopCamera();stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:activeFacing},audio:true});video.srcObject=stream;video.hidden=false;$('cameraPlaceholder').hidden=true;image.hidden=true;videoPreview.hidden=true;$('startCameraBtn').textContent='Close camera';$('takePhotoBtn').disabled=false;$('recordVideoBtn').disabled=!window.MediaRecorder;$('switchCameraBtn').disabled=false;$('mediaInfo').textContent='Camera ready. Capture a photo or record a short video.'}catch(e){toast(e.message||'Could not open camera. Check permissions or choose a file.');$('cameraPlaceholder').hidden=false;video.hidden=true}}
-$('startCameraBtn').onclick=()=>{if(stream){stopCamera();video.hidden=true;$('cameraPlaceholder').hidden=false}else startCamera()};$('switchCameraBtn').onclick=async()=>{activeFacing=activeFacing==='environment'?'user':'environment';await startCamera()};
-function setMedia(blob,kind,name){if(mediaUrl)URL.revokeObjectURL(mediaUrl);mediaBlob=blob;mediaKind=kind;mediaName=name||((kind==='video'?'checkin.webm':'checkin.jpg'));mediaUrl=URL.createObjectURL(blob);image.hidden=true;videoPreview.hidden=true;if(kind==='image'){image.src=mediaUrl;image.hidden=false}else{videoPreview.src=mediaUrl;videoPreview.hidden=false}if(stream){video.hidden=true} $('cameraPlaceholder').hidden=true;$('mediaInfo').textContent=`${kind==='video'?'Video':'Photo'} selected · ${(blob.size/1024/1024).toFixed(2)} MB · ${mediaName}`;$('clearMediaBtn').disabled=false;$('sendCheckinBtn').disabled=false;$('checkinStatusChip').textContent='Media ready'}
-$('takePhotoBtn').onclick=()=>{if(!stream||!video.videoWidth){toast('Open the camera first.');return}const canvas=document.createElement('canvas');canvas.width=video.videoWidth;canvas.height=video.videoHeight;const ctx=canvas.getContext('2d');if(activeFacing==='user'){ctx.translate(canvas.width,0);ctx.scale(-1,1)}ctx.drawImage(video,0,0,canvas.width,canvas.height);canvas.toBlob(blob=>{if(blob){setMedia(blob,'image','checkin.jpg');animateCharacter()}else toast('Could not capture photo.')},'image/jpeg',.9)};
-$('recordVideoBtn').onclick=()=>{if(recording){mediaRecorder?.stop();return}if(!stream||!window.MediaRecorder){toast('Video recording is unavailable.');return}recordChunks=[];let options={};if(MediaRecorder.isTypeSupported('video/webm;codecs=vp9,opus'))options.mimeType='video/webm;codecs=vp9,opus';else if(MediaRecorder.isTypeSupported('video/webm'))options.mimeType='video/webm';try{mediaRecorder=new MediaRecorder(stream,options)}catch{toast('This browser cannot record video with the current camera.');return}mediaRecorder.ondataavailable=e=>{if(e.data&&e.data.size)recordChunks.push(e.data)};mediaRecorder.onstop=()=>{recording=false;$('recordVideoBtn').textContent='● Record video';const type=mediaRecorder.mimeType||'video/webm';const blob=new Blob(recordChunks,{type});if(blob.size)setMedia(blob,'video',type.includes('mp4')?'checkin.mp4':'checkin.webm');else toast('No video was recorded.')};mediaRecorder.start();recording=true;$('recordVideoBtn').textContent='■ Stop recording';toast('Recording started. Tap Stop recording when done.')};
-$('fileInput').onchange=()=>{const f=$('fileInput').files?.[0];if(!f)return;const isVideo=f.type.startsWith('video/');if(!isVideo&&!f.type.startsWith('image/')){toast('Choose an image or video file.');return}if(f.size>9*1024*1024){toast('This file is over 9 MB. Choose a smaller file for Discord upload.');$('fileInput').value='';return}setMedia(f,isVideo?'video':'image',f.name)};
-$('clearMediaBtn').onclick=()=>{if(mediaUrl)URL.revokeObjectURL(mediaUrl);mediaUrl='';mediaBlob=null;mediaKind='';mediaName='';image.hidden=true;videoPreview.pause();videoPreview.removeAttribute('src');videoPreview.load();videoPreview.hidden=true;$('fileInput').value='';$('mediaInfo').textContent='No media selected yet.';$('clearMediaBtn').disabled=true;$('sendCheckinBtn').disabled=true;$('checkinStatusChip').textContent='Ready';if(stream){video.hidden=false;$('cameraPlaceholder').hidden=true}else{$('cameraPlaceholder').hidden=false;video.hidden=true}};
-async function uploadWebhook(blob,kind,name,caption){if(!validWebhook(state.webhook))throw new Error('Save a valid Discord webhook URL in Settings first.');if(blob.size>9*1024*1024)throw new Error('This media is larger than 9 MB. Choose a smaller file.');const form=new FormData();form.append('payload_json',JSON.stringify({content:(caption||'Just checking in ✨').slice(0,1900)}));form.append('files[0]',blob,name|| (kind==='video'?'checkin.webm':'checkin.jpg'));const res=await fetch(state.webhook,{method:'POST',body:form});if(!res.ok){let message='Discord upload failed ('+res.status+').';try{const body=await res.json();if(body.message)message+=' '+body.message}catch{}throw new Error(message)}return true}
-$('sendCheckinBtn').onclick=async()=>{if(!mediaBlob){toast('Capture or choose a photo/video first.');return}if(!state.webhook){showPage('settings');webhookSetupModal();return}processDeadline();if(state.lastCheckinAt&&state.nextDueAt&&now()<state.nextDueAt){toast('Your next check-in reward is available in '+fmtTime(state.nextDueAt-now())+'.');return}const b=$('sendCheckinBtn');b.disabled=true;b.textContent='Sending…';$('checkinStatusChip').textContent='Uploading';$('checkinNotice').className='notice';$('checkinNotice').textContent='Uploading to Discord… rewards are added only after Discord confirms success.';try{await uploadWebhook(mediaBlob,mediaKind,mediaName,$('captionInput').value.trim());const t=now();if(state.lastCheckinAt&&state.windowDeadlineAt&&t>state.windowDeadlineAt){const missed=Math.floor((t-state.windowDeadlineAt)/INTERVAL)+1;if(missed===1&&state.inventory.freeze>0){state.inventory.freeze--;addHistory('freeze','Streak freeze used','Protected one missed check-in window.',0)}else state.streak=0}if(!state.lastCheckinAt||state.streak===0)state.streak=1;else state.streak++;state.lastCheckinAt=t;state.nextDueAt=t+INTERVAL;state.windowDeadlineAt=t+2*INTERVAL;state.bestStreak=Math.max(state.bestStreak,state.streak);state.checkins++;state.sparks++;state.xp+=10;state.energy=Math.min(100,state.energy+8);state.lastEnergyAt=t;addHistory('checkin','Check-in sent',($('captionInput').value.trim()||'Just checking in')+' · '+mediaKind,1);const oldLevel=levelInfo(state.xp-10).level,newLevel=levelInfo().level;if(newLevel>oldLevel){addHistory('level','Level up!','You reached level '+newLevel+'.',0);setTimeout(()=>modal('✨','Level up!','You reached level '+newLevel+'. Keep building at your own pace.'),250)}updateAchievements();save();renderAll();animateCharacter();$('checkinNotice').className='notice good';$('checkinNotice').textContent='Sent successfully! +1 Spark · +10 XP. Your progress has been saved on this device.';$('checkinStatusChip').textContent='Sent';toast('Check-in sent · +1 Spark · +10 XP');$('clearMediaBtn').click();if(state.autoVoice)setTimeout(()=>speak(currentMood().desc),400)}catch(e){$('checkinNotice').className='notice bad';$('checkinNotice').textContent=e.message||'Upload failed. Check internet and webhook settings.';$('checkinStatusChip').textContent='Failed';toast(e.message||'Upload failed. No reward was granted.')}finally{b.textContent='Send check-in ↗';b.disabled=!mediaBlob}};
-// Sleep mode pauses the due timestamp by the duration actually spent sleeping.
-function startSleep(){if(state.sleepUntil>now()){toast('Sleep mode is already active.');return}const hours=Math.min(9,Math.max(1,Number($('sleepDuration').value)||9));state.sleepStartedAt=now();state.sleepUntil=state.sleepStartedAt+hours*HOUR;state.lastEnergyAt=now();addHistory('sleep','Sleep mode started','Timer paused for up to '+hours+' hours.',0);save();renderAll();toast('Sleep mode on for '+hours+' hours.');}
-function endSleep(){if(!state.sleepUntil){toast('Sleep mode is not active.');return}const used=Math.min(MAX_SLEEP,Math.max(0,now()-(state.sleepStartedAt||state.sleepUntil-MAX_SLEEP)));if(state.nextDueAt&&used>0)state.nextDueAt+=used;if(state.windowDeadlineAt&&used>0)state.windowDeadlineAt+=used;state.sleepUntil=0;state.sleepStartedAt=0;state.energy=Math.min(100,state.energy+10);state.lastEnergyAt=now();addHistory('sleep','Sleep mode ended','Timer resumed. Welcome back.',0);save();renderAll();toast('Sleep mode ended.')}
-$('sleepBtn').onclick=()=>state.sleepUntil>now()?endSleep():startSleep();$('startSleepBtn').onclick=startSleep;$('endSleepBtn').onclick=endSleep;
-// Reminder notifications: only while this page is open; no fake background guarantee.
-$('reminderToggle').checked=state.reminders;$('reminderInterval').value=String(state.reminderInterval||60);$('reminderToggle').onchange=()=>{state.reminders=$('reminderToggle').checked;state.lastReminderAt=now();save();renderClock()};$('reminderInterval').onchange=()=>{state.reminderInterval=Number($('reminderInterval').value)||60;save()};$('permissionBtn').onclick=async()=>{if(!('Notification'in window)){toast('Browser notifications are not supported.');return}try{const p=await Notification.requestPermission();if(p==='granted'){state.reminders=true;$('reminderToggle').checked=true;state.lastReminderAt=now();save();renderClock();toast('Notifications enabled while this page is open.')}else toast('Notification permission was not granted.')}catch{toast('Could not request notification permission.')}};
-function reminderTick(){if(!state.reminders||!('Notification'in window)||Notification.permission!=='granted')return;const t=now(),interval=(Number(state.reminderInterval)||60)*60000;if(!state.lastReminderAt)state.lastReminderAt=t;if(t-state.lastReminderAt>=interval){state.lastReminderAt=t;save();try{new Notification('Little Room',{body:state.sleepUntil>t?'Sleep well. Your streak timer is paused.':'A little check-in? Your progress is waiting when you are.',icon:''})}catch{}}}
-// Profile, backup, import and reset.
-$('saveProfileBtn').onclick=()=>{state.profile.name=$('profileName').value.trim().slice(0,32);state.profile.bio=$('profileBio').value.trim().slice(0,90);save();toast('Profile saved on this device.')};$('exportBtn').onclick=()=>{const data=JSON.stringify({...state,webhook:''},null,2);const blob=new Blob([data],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='little-room-backup.json';a.click();URL.revokeObjectURL(url);toast('Backup exported. Webhook URL was excluded for safety.')};$('importBtn').onclick=()=>$('importFile').click();$('importFile').onchange=async()=>{const f=$('importFile').files?.[0];if(!f)return;try{const parsed=JSON.parse(await f.text());const existingWebhook=state.webhook;state=normalize(parsed);if(!state.webhook)state.webhook=existingWebhook;save();$('webhookInput').value=state.webhook;$('autoVoiceToggle').checked=state.autoVoice;$('reminderToggle').checked=state.reminders;$('reminderInterval').value=String(state.reminderInterval||60);renderAll();toast('Backup imported.')}catch{toast('That backup file could not be read.')}finally{$('importFile').value=''}};$('resetBtn').onclick=()=>modal('⚠️','Reset all progress?','This deletes the local room, Sparks, XP, streaks, inventory and activity history. Export a backup first if you want to keep it.','<div class="notice bad">This cannot be undone.</div><button class="btn danger" id="confirmReset" style="width:100%;margin-top:8px">Delete local progress</button>','Keep my progress',()=>{});document.addEventListener('click',e=>{if(e.target&&e.target.id==='confirmReset'){state=fresh();save();$('webhookInput').value='';$('autoVoiceToggle').checked=false;$('reminderToggle').checked=false;$('reminderInterval').value='60';$('modalBackdrop').classList.remove('show');renderAll();webhookSetupModal()}});
-// Initial setup and render.
-$('webhookInput').value=state.webhook;$('profileName').value=state.profile.name||'';$('profileBio').value=state.profile.bio||'';$('captionInput').value=state.caption||'Just checking in ✨';$('autoVoiceToggle').checked=state.autoVoice;$('reminderToggle').checked=state.reminders;$('reminderInterval').value=String(state.reminderInterval||60);$('voiceSelect').value=state.voiceName||'';processDeadline();energyUpdate();renderAll();save();
-if(!state.webhook){setTimeout(()=>{showPage('settings');webhookSetupModal()},350)}else if(state.autoVoice){setTimeout(()=>speak(currentMood().desc),700)}
-timer=setInterval(()=>{tick();reminderTick()},30000);window.addEventListener('pagehide',()=>{stopCamera();if(mediaUrl)URL.revokeObjectURL(mediaUrl);if(window.speechSynthesis)window.speechSynthesis.cancel()});
+"use strict";
+
+(() => {
+  const $ = id => document.getElementById(id);
+  const TWO_HOURS = 2 * 60 * 60 * 1000;
+  const MAX_RECORDING_MS = 10 * 60 * 1000;
+  const MAX_UPLOAD_BYTES = 24 * 1024 * 1024;
+
+  const KEYS = {
+    webhook: "streak.webhook.v1",
+    streak: "streak.data.v1"
+  };
+
+  const DEFAULT_STATE = {
+    streak: 0,
+    best: 0,
+    total: 0,
+    lastSuccess: 0
+  };
+
+  let state = loadState();
+  let stream = null;
+  let facingMode = "environment";
+  let mode = "photo";
+  let recorder = null;
+  let recordedChunks = [];
+  let recordingTimer = null;
+  let recordingStartedAt = 0;
+  let recordingElapsed = 0;
+  let capturedBlob = null;
+  let capturedType = "";
+  let capturedUrl = null;
+  let uploading = false;
+  let toastTimer = null;
+  let celebrationTimer = null;
+  let countdownTimer = null;
+
+  const camera = $("camera");
+  const previewMedia = $("previewMedia");
+  const captureButton = $("captureButton");
+  const recordingTime = $("recordingTime");
+  const uploadOverlay = $("uploadOverlay");
+  const toast = $("toast");
+
+  function loadState() {
+    try {
+      const parsed = JSON.parse(localStorage.getItem(KEYS.streak) || "{}");
+      return {
+        streak: nonNegativeInt(parsed.streak),
+        best: nonNegativeInt(parsed.best),
+        total: nonNegativeInt(parsed.total),
+        lastSuccess: validTimestamp(parsed.lastSuccess)
+      };
+    } catch {
+      return { ...DEFAULT_STATE };
+    }
+  }
+
+  function nonNegativeInt(value) {
+    const n = Number(value);
+    return Number.isSafeInteger(n) && n >= 0 ? n : 0;
+  }
+
+  function validTimestamp(value) {
+    const n = Number(value);
+    return Number.isFinite(n) && n > 0 && n <= Date.now() + 60000 ? n : 0;
+  }
+
+  function saveState() {
+    try {
+      localStorage.setItem(KEYS.streak, JSON.stringify(state));
+    } catch {
+      showToast("Could not save app data. Check browser storage settings.", "error");
+    }
+    updateStreakUI();
+  }
+
+  function getWebhook() {
+    try {
+      return (localStorage.getItem(KEYS.webhook) || "").trim();
+    } catch {
+      return "";
+    }
+  }
+
+  function setWebhook(value) {
+    try {
+      localStorage.setItem(KEYS.webhook, value.trim());
+      return true;
+    } catch {
+      showToast("Could not save webhook. Browser storage may be unavailable.", "error");
+      return false;
+    }
+  }
+
+  function isValidWebhook(value) {
+    try {
+      const url = new URL(value);
+      return url.protocol === "https:" &&
+        (url.hostname === "discord.com" || url.hostname === "discordapp.com") &&
+        /^\/api\/webhooks\/\d+\/[^/]+\/?$/.test(url.pathname);
+    } catch {
+      return false;
+    }
+  }
+
+  function showToast(message, type = "") {
+    clearTimeout(toastTimer);
+    toast.textContent = message;
+    toast.className = "";
+    toast.classList.add("show");
+    if (type) toast.classList.add(type);
+    toastTimer = setTimeout(() => toast.classList.remove("show"), 3400);
+  }
+
+  function showView(view) {
+    ["previewView", "settingsView", "streakView", "setupView"].forEach(id => {
+      $(id).classList.toggle("open", id === view);
+    });
+  }
+
+  function closeOverlays() {
+    ["previewView", "settingsView", "streakView", "setupView"].forEach(id => {
+      $(id).classList.remove("open");
+    });
+  }
+
+  function checkExpiry() {
+    if (state.lastSuccess > 0 && Date.now() >= state.lastSuccess + TWO_HOURS) {
+      state.streak = 0;
+      state.lastSuccess = 0;
+      saveState();
+    }
+  }
+
+  function updateStreakUI() {
+    $("topStreak").textContent = String(state.streak);
+    $("streakNumber").textContent = String(state.streak);
+    $("bestStreak").textContent = String(state.best);
+    $("totalUploads").textContent = String(state.total);
+
+    if (!state.lastSuccess) {
+      $("countdown").textContent = "CHECK IN";
+      $("deadlineMessage").textContent = "Send a photo or video successfully to start your two-hour window.";
+      $("deadlineProgress").style.width = "0%";
+      return;
+    }
+
+    const remaining = Math.max(0, state.lastSuccess + TWO_HOURS - Date.now());
+    $("countdown").textContent = formatDuration(remaining);
+    $("deadlineMessage").textContent = remaining > 0
+      ? "Upload again before the timer reaches zero."
+      : "Your streak has expired. Upload to start a new one.";
+
+    $("deadlineProgress").style.width =
+      `${Math.max(0, Math.min(100, remaining / TWO_HOURS * 100))}%`;
+  }
+
+  function formatDuration(ms) {
+    const seconds = Math.max(0, Math.floor(ms / 1000));
+    const h = Math.floor(seconds / 3600);
+    const m = Math.floor((seconds % 3600) / 60);
+    const s = seconds % 60;
+    return [h, m, s].map(n => String(n).padStart(2, "0")).join(":");
+  }
+
+  function showCelebration() {
+    $("celebrationText").textContent = `Streak ${state.streak}`;
+    $("celebrationSub").textContent = "Successfully sent to Discord";
+    const el = $("celebration");
+    el.classList.remove("show");
+    void el.offsetWidth;
+    el.classList.add("show");
+    clearTimeout(celebrationTimer);
+    celebrationTimer = setTimeout(() => el.classList.remove("show"), 1000);
+  }
+
+  async function startCamera() {
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      showToast("Camera access requires HTTPS or localhost and a supported browser.", "error");
+      $("cameraHint").textContent = "Open this app through HTTPS to use the camera.";
+      return false;
+    }
+
+    stopCamera();
+
+    try {
+      stream = await navigator.mediaDevices.getUserMedia({
+        audio: true,
+        video: {
+          facingMode: { ideal: facingMode },
+          width: { ideal: 1920 },
+          height: { ideal: 1080 }
+        }
+      });
+      camera.srcObject = stream;
+      await camera.play().catch(() => {});
+      $("cameraHint").textContent = "";
+      return true;
+    } catch (error) {
+      console.error("Camera error:", error);
+      $("cameraHint").textContent = "Allow camera and microphone access to continue.";
+      showToast(cameraErrorMessage(error), "error");
+      return false;
+    }
+  }
+
+  function cameraErrorMessage(error) {
+    if (error && error.name === "NotAllowedError") {
+      return "Camera or microphone permission was denied. Allow access in browser settings.";
+    }
+    if (error && error.name === "NotFoundError") {
+      return "No compatible camera was found.";
+    }
+    if (error && error.name === "NotReadableError") {
+      return "The camera may be in use by another app.";
+    }
+    return "Could not start the camera. Check permissions and try again.";
+  }
+
+  function stopCamera() {
+    if (stream) {
+      stream.getTracks().forEach(track => track.stop());
+      stream = null;
+    }
+    camera.srcObject = null;
+  }
+
+  function setMode(nextMode) {
+    if (recorder && recorder.state === "recording") {
+      showToast("Stop recording before changing modes.", "error");
+      return;
+    }
+    mode = nextMode;
+    $("photoMode").classList.toggle("active", mode === "photo");
+    $("videoMode").classList.toggle("active", mode === "video");
+    captureButton.classList.remove("recording");
+    captureButton.setAttribute("aria-label", mode === "photo" ? "Take photo" : "Start recording");
+    $("cameraHint").textContent = mode === "video" ? "Tap to record. Tap again to stop." : "";
+  }
+
+  function capturePhoto() {
+    if (!stream || !camera.videoWidth || !camera.videoHeight) {
+      showToast("Camera is not ready yet.", "error");
+      return;
+    }
+
+    const canvas = document.createElement("canvas");
+    canvas.width = camera.videoWidth;
+    canvas.height = camera.videoHeight;
+    const ctx = canvas.getContext("2d", { alpha: false });
+
+    if (facingMode === "user") {
+      ctx.translate(canvas.width, 0);
+      ctx.scale(-1, 1);
+    }
+    ctx.drawImage(camera, 0, 0, canvas.width, canvas.height);
+
+    canvas.toBlob(blob => {
+      if (!blob) {
+        showToast("Could not capture the photo. Please try again.", "error");
+        return;
+      }
+      openPreview(blob, "image/jpeg");
+    }, "image/jpeg", 0.92);
+  }
+
+  function getSupportedVideoMime() {
+    if (!window.MediaRecorder) return "";
+    const types = [
+      "video/webm;codecs=vp9,opus",
+      "video/webm;codecs=vp8,opus",
+      "video/webm",
+      "video/mp4"
+    ];
+    return types.find(type => MediaRecorder.isTypeSupported(type)) || "";
+  }
+
+  function startRecording() {
+    if (!stream) {
+      showToast("Camera is not ready yet.", "error");
+      return;
+    }
+    if (!window.MediaRecorder) {
+      showToast("Video recording is not supported by this browser.", "error");
+      return;
+    }
+
+    const mimeType = getSupportedVideoMime();
+    if (!mimeType) {
+      showToast("This browser does not support a compatible recording format.", "error");
+      return;
+    }
+
+    try {
+      recordedChunks = [];
+      recorder = new MediaRecorder(stream, { mimeType });
+      recorder.ondataavailable = event => {
+        if (event.data && event.data.size > 0) recordedChunks.push(event.data);
+      };
+      recorder.onerror = event => {
+        console.error("Recording error:", event.error);
+        showToast("Recording failed. Please try again.", "error");
+        resetRecordingUI();
+      };
+      recorder.onstop = () => {
+        clearInterval(recordingTimer);
+        recordingElapsed = 0;
+        const blob = new Blob(recordedChunks, { type: recorder.mimeType || mimeType });
+        recordedChunks = [];
+        resetRecordingUI();
+
+        if (!blob.size) {
+          showToast("No video was captured. Please try again.", "error");
+          return;
+        }
+        openPreview(blob, blob.type || "video/webm");
+      };
+
+      recorder.start(1000);
+      recordingStartedAt = Date.now();
+      captureButton.classList.add("recording");
+      recordingTime.classList.add("visible");
+      recordingTime.textContent = "00:00";
+      $("cameraHint").textContent = "Recording… tap the square to finish.";
+
+      recordingTimer = setInterval(() => {
+        const elapsed = Date.now() - recordingStartedAt;
+        recordingTime.textContent = formatDuration(elapsed).slice(3);
+        if (elapsed >= MAX_RECORDING_MS && recorder && recorder.state === "recording") {
+          stopRecording();
+          showToast("Maximum recording length reached.");
+        }
+      }, 250);
+    } catch (error) {
+      console.error(error);
+      showToast("Could not start recording. Try again.", "error");
+      resetRecordingUI();
+    }
+  }
+
+  function stopRecording() {
+    if (recorder && recorder.state === "recording") recorder.stop();
+  }
+
+  function resetRecordingUI() {
+    clearInterval(recordingTimer);
+    recordingTimer = null;
+    captureButton.classList.remove("recording");
+    recordingTime.classList.remove("visible");
+    $("cameraHint").textContent = mode === "video" ? "Tap to record. Tap again to stop." : "";
+  }
+
+  function openPreview(blob, type) {
+    capturedBlob = blob;
+    capturedType = type;
+    if (capturedUrl) URL.revokeObjectURL(capturedUrl);
+    capturedUrl = URL.createObjectURL(blob);
+
+    previewMedia.pause();
+    previewMedia.removeAttribute("src");
+    previewMedia.src = capturedUrl;
+    previewMedia.controls = type.startsWith("video/");
+    previewMedia.load();
+    showView("previewView");
+  }
+
+  function discardCapture() {
+    previewMedia.pause();
+    previewMedia.removeAttribute("src");
+    previewMedia.load();
+    if (capturedUrl) URL.revokeObjectURL(capturedUrl);
+    capturedUrl = null;
+    capturedBlob = null;
+    capturedType = "";
+    closeOverlays();
+  }
+
+  function setUploading(active, message = "Sending to Discord…", subtext = "Your streak changes only after a successful upload.") {
+    uploading = active;
+    uploadOverlay.classList.toggle("open", active);
+    $("uploadMessage").textContent = message;
+    $("uploadSubtext").textContent = subtext;
+    $("uploadSpinner").style.display = active ? "block" : "none";
+    $("sendButton").disabled = active;
+    $("discardButton").disabled = active;
+    $("retakeButton").disabled = active;
+  }
+
+  async function sendCapture() {
+    if (uploading) return;
+    if (!capturedBlob) {
+      showToast("Capture a photo or video first.", "error");
+      return;
+    }
+
+    const webhook = getWebhook();
+    if (!isValidWebhook(webhook)) {
+      showToast("Add a valid Discord webhook URL in Settings.", "error");
+      showView("settingsView");
+      $("webhookInput").value = webhook;
+      return;
+    }
+
+    if (capturedBlob.size > MAX_UPLOAD_BYTES) {
+      showToast("This file is larger than the app's 24 MB upload limit. Record a shorter video.", "error");
+      return;
+    }
+
+    setUploading(true);
+    const isVideo = capturedType.startsWith("video/");
+    const extension = isVideo
+      ? (capturedType.includes("mp4") ? "mp4" : "webm")
+      : "jpg";
+    const filename = `${isVideo ? "checkin" : "photo"}-${Date.now()}.${extension}`;
+
+    const form = new FormData();
+    form.append("payload_json", JSON.stringify({
+      content: `📸 Check-in · ${new Date().toLocaleString()}`
+    }));
+    form.append("files[0]", capturedBlob, filename);
+
+    try {
+      const response = await fetch(`${webhook}?wait=true`, {
+        method: "POST",
+        body: form
+      });
+
+      if (!response.ok) {
+        let detail = "";
+        try {
+          const data = await response.json();
+          detail = data.message || "";
+        } catch {}
+        throw new Error(`Discord returned HTTP ${response.status}${detail ? `: ${detail}` : ""}`);
+      }
+
+      // A successful HTTP response is the only event that awards a streak.
+      checkExpiry();
+      state.streak += 1;
+      state.best = Math.max(state.best, state.streak);
+      state.total += 1;
+      state.lastSuccess = Date.now();
+      saveState();
+
+      setUploading(false);
+      discardCapture();
+      showCelebration();
+      showToast("Uploaded successfully. Your streak increased.", "success");
+    } catch (error) {
+      console.error("Discord upload failed:", error);
+      setUploading(false);
+      showToast(
+        error instanceof TypeError
+          ? "Upload failed. Check your internet connection, webhook URL, or browser CORS restrictions."
+          : (error.message || "Upload failed. Your streak has not increased."),
+        "error"
+      );
+    }
+  }
+
+  async function testWebhook() {
+    const value = $("webhookInput").value.trim();
+    if (!isValidWebhook(value)) {
+      showToast("Enter a valid Discord webhook URL first.", "error");
+      return;
+    }
+
+    $("testWebhook").disabled = true;
+    $("testWebhook").textContent = "Testing…";
+
+    try {
+      const response = await fetch(value, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ content: "STREAK connection test successful." })
+      });
+      if (!response.ok) throw new Error(`Discord returned HTTP ${response.status}`);
+      showToast("Connection successful. Check your Discord channel.", "success");
+    } catch (error) {
+      console.error(error);
+      showToast("Test failed. Check the webhook and network. " + (error.message || ""), "error");
+    } finally {
+      $("testWebhook").disabled = false;
+      $("testWebhook").textContent = "Test connection";
+    }
+  }
+
+  function updateCountdown() {
+    checkExpiry();
+    updateStreakUI();
+  }
+
+  async function saveAndConnect(inputId, shouldStartCamera) {
+    const value = $(inputId).value.trim();
+    if (!isValidWebhook(value)) {
+      showToast("Enter a valid Discord webhook URL.", "error");
+      return false;
+    }
+    if (!setWebhook(value)) return false;
+
+    $("webhookInput").value = value;
+    closeOverlays();
+    showToast("Webhook saved.", "success");
+    if (shouldStartCamera) await startCamera();
+    return true;
+  }
+
+  $("photoMode").addEventListener("click", () => setMode("photo"));
+  $("videoMode").addEventListener("click", () => setMode("video"));
+
+  captureButton.addEventListener("click", () => {
+    if (uploading) return;
+    if (mode === "photo") {
+      capturePhoto();
+    } else if (recorder && recorder.state === "recording") {
+      stopRecording();
+    } else {
+      startRecording();
+    }
+  });
+
+  $("switchCamera").addEventListener("click", async () => {
+    if (recorder && recorder.state === "recording") {
+      showToast("Stop recording before switching cameras.", "error");
+      return;
+    }
+    facingMode = facingMode === "environment" ? "user" : "environment";
+    await startCamera();
+  });
+
+  $("openSettings").addEventListener("click", () => {
+    $("webhookInput").value = getWebhook();
+    showView("settingsView");
+  });
+  $("closeSettings").addEventListener("click", closeOverlays);
+  $("openStreak").addEventListener("click", () => {
+    updateCountdown();
+    showView("streakView");
+  });
+  $("closeStreak").addEventListener("click", closeOverlays);
+  $("backToCamera").addEventListener("click", closeOverlays);
+  $("retakeButton").addEventListener("click", discardCapture);
+  $("discardButton").addEventListener("click", discardCapture);
+  $("sendButton").addEventListener("click", sendCapture);
+  $("testWebhook").addEventListener("click", testWebhook);
+
+  $("saveWebhook").addEventListener("click", async () => {
+    await saveAndConnect("webhookInput", false);
+  });
+
+  $("connectDiscord").addEventListener("click", async () => {
+    const ok = await saveAndConnect("setupWebhook", false);
+    if (ok) await startCamera();
+  });
+
+  $("skipSetup").addEventListener("click", async () => {
+    closeOverlays();
+    await startCamera();
+  });
+
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden) updateCountdown();
+  });
+
+  window.addEventListener("pagehide", () => {
+    if (recorder && recorder.state === "recording") {
+      try { recorder.stop(); } catch {}
+    }
+    stopCamera();
+  });
+
+  // SVG app icon generated in code; no icon image files are required.
+  const iconSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="112" fill="#09090b"/><path d="M278 66c11 84-32 111-63 151-27 34-30 55-22 88-38-19-57-59-50-97-57 54-84 107-73 161 14 67 73 112 145 112 78 0 142-61 142-139 0-94-66-177-144-276Z" fill="#ff663d"/><path d="M246 411c-35 0-62-28-62-62 0-24 14-44 34-65 2 28 20 42 35 50 19-20 27-37 24-68 27 29 45 57 45 84 0 34-28 61-76 61Z" fill="#fff"/></svg>`;
+  const iconUrl = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(iconSvg);
+  $("appIcon").href = iconUrl;
+  $("appleIcon").href = iconUrl;
+
+  async function init() {
+    updateCountdown();
+    countdownTimer = setInterval(updateCountdown, 1000);
+
+    const webhook = getWebhook();
+    if (webhook) {
+      $("webhookInput").value = webhook;
+      await startCamera();
+    } else {
+      showView("setupView");
+    }
+
+    if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
+      try {
+        await navigator.serviceWorker.register("./service-worker.js");
+      } catch (error) {
+        console.warn("Service worker registration failed:", error);
+      }
+    }
+  }
+
+  init();
 })();
-</script></body></html>
+</script>
+</body>
+</html>
