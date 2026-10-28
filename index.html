@@ -1,57 +1,2103 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#08080a">
-<meta name="description" content="A minimal camera check-in streak tracker.">
-<title>STREAK — Show up.</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#09090b">
+<meta name="description" content="A minimal camera app with Discord check-ins, streaks and rewards.">
+<title>STREAK</title>
+
+<link rel="manifest" href="./manifest.json">
+<link rel="icon" id="appIcon" type="image/svg+xml">
+<link rel="apple-touch-icon" id="appleIcon">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
 <style>
-:root{color-scheme:dark;--bg:#08080a;--panel:#111114;--panel2:#17171b;--line:#29292f;--text:#f5f5f6;--muted:#96969f;--accent:#e55a32;--green:#7be0a3;--radius:20px;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#171114 0%,var(--bg) 50%);color:var(--text);min-height:100dvh}button,input{font:inherit}button{cursor:pointer;border:0;transition:transform .15s,opacity .15s}button:active{transform:scale(.98)}button:disabled{opacity:.4;cursor:not-allowed}button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:3px}.app{width:min(100%,520px);margin:auto;min-height:100dvh;padding:calc(18px + env(safe-area-inset-top)) 18px calc(24px + env(safe-area-inset-bottom));display:flex;flex-direction:column}.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px}.brand{font-weight:900;letter-spacing:.17em;font-size:15px}.brand span{color:var(--accent)}.icon-btn{width:42px;height:42px;border-radius:14px;background:var(--panel2);border:1px solid var(--line);color:var(--text);font-size:18px}.view{display:none;animation:enter .25s ease}.view.active{display:block}@keyframes enter{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}.eyebrow{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.16em;font-weight:700}.hero h1{font-size:clamp(36px,10vw,48px);line-height:1.03;letter-spacing:-.06em;margin:10px 0 12px}.hero p,.muted{color:var(--muted);line-height:1.55;font-size:14px}.hero p{max-width:350px;margin:0}.card{background:linear-gradient(145deg,#151518,#101013);border:1px solid var(--line);border-radius:var(--radius);padding:20px;margin-top:18px}.streak-row{display:flex;align-items:center;justify-content:space-between;gap:12px}.streak-number{font-size:52px;line-height:1;font-weight:850;letter-spacing:-.06em}.streak-number small{font-size:15px;color:var(--muted);letter-spacing:0;font-weight:600}.pill{font-size:11px;padding:8px 10px;border-radius:999px;border:1px solid #3b2923;color:#ff9b79;background:#271711;font-weight:750;white-space:nowrap}.countdown{font-size:28px;font-variant-numeric:tabular-nums;font-weight:800;letter-spacing:.05em;margin-top:20px}.progress{height:5px;background:#29292f;border-radius:9px;overflow:hidden;margin-top:12px}.progress>div{height:100%;width:0;background:var(--accent);border-radius:9px;transition:width .3s}.small{font-size:12px;color:var(--muted);line-height:1.5}.btn{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;min-height:52px;padding:14px 16px;border-radius:15px;font-weight:800}.primary{background:var(--accent);color:white;box-shadow:0 8px 28px #e55a3224}.secondary{background:var(--panel2);color:var(--text);border:1px solid var(--line)}.ghost{background:transparent;color:var(--muted);border:1px solid var(--line)}.button-stack{display:grid;gap:10px;margin-top:16px}.two-col{display:grid;grid-template-columns:1fr 1fr;gap:10px}.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}.stat{padding:15px;border:1px solid var(--line);background:#0e0e11;border-radius:15px}.stat strong{font-size:23px;display:block;letter-spacing:-.04em}.stat span{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em}.section-title{font-size:20px;letter-spacing:-.04em;margin:0 0 5px}.section-head{display:flex;justify-content:space-between;align-items:center;gap:12px}.field{margin-top:17px}.field label{display:block;font-size:12px;color:var(--muted);margin-bottom:8px}.field input{width:100%;border-radius:12px;border:1px solid var(--line);background:#09090b;padding:14px;color:var(--text)}.note{font-size:12px;color:var(--muted);line-height:1.55;margin-top:10px}.notice{padding:12px;border-radius:12px;background:#17171b;border:1px solid var(--line);font-size:12px;line-height:1.5;color:var(--muted);margin-top:12px;overflow-wrap:anywhere}.notice.good{color:var(--green);border-color:#244332}.notice.bad{color:#ff9a9a;border-color:#4b2929}.divider{height:1px;background:var(--line);margin:18px 0}.back{margin-top:18px}.hidden{display:none!important}.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom));transform:translate(-50%,20px);width:max-content;max-width:calc(100% - 32px);padding:12px 16px;background:#242428;border:1px solid #39393f;border-radius:14px;color:white;font-size:13px;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:50}.toast.show{opacity:1;transform:translate(-50%,0)}.overlay{position:fixed;inset:0;background:#000c;display:none;align-items:center;justify-content:center;padding:18px;z-index:30}.overlay.show{display:flex}.modal{width:min(100%,460px);background:#111114;border:1px solid #39393f;border-radius:22px;padding:18px}.modal video{width:100%;max-height:60dvh;object-fit:contain;background:#050505;border-radius:14px}.modal-actions{display:flex;gap:8px;margin-top:12px}.modal-actions .btn{flex:1}.celebration{position:fixed;inset:0;z-index:40;display:grid;place-items:center;background:#08080ad9;opacity:0;pointer-events:none}.celebration.show{animation:celebrate 5s ease both}.celebrate-card{text-align:center;padding:28px}.fire{font-size:52px;filter:drop-shadow(0 0 20px #e55a3266)}.celebrate-card h2{font-size:48px;letter-spacing:-.06em;margin:12px 0}.celebrate-card p{color:var(--muted);margin:0}.spark{color:#ffb17e;font-weight:800}.celebration.show .fire{animation:firepop .65s ease both}@keyframes firepop{0%{transform:scale(.3) rotate(-18deg)}70%{transform:scale(1.2) rotate(5deg)}100%{transform:scale(1)}}@keyframes celebrate{0%{opacity:0}6%{opacity:1}84%{opacity:1}100%{opacity:0}}.footer{margin-top:auto;padding-top:28px;text-align:center;font-size:11px;color:#676770}.camera-preview{width:100%;aspect-ratio:4/3;object-fit:cover;background:#050505;border:1px solid var(--line);border-radius:16px;margin-top:16px}.file-label{display:flex;justify-content:center;align-items:center;min-height:52px;border-radius:15px;background:var(--panel2);border:1px solid var(--line);font-weight:750;cursor:pointer}.setting-card{padding:16px;border:1px solid var(--line);border-radius:16px;margin-top:12px;background:#0e0e11}.row-name{font-weight:800;font-size:14px}.row-description{color:var(--muted);font-size:12px;line-height:1.5;margin-top:5px}.badge-free{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--green);font-weight:800}@media(min-width:520px){.app{padding-top:28px}}
+:root {
+  color-scheme: dark;
+  --bg: #09090b;
+  --panel: #151518;
+  --panel2: #202024;
+  --text: #f5f5f5;
+  --muted: #929299;
+  --accent: #ff663d;
+  --gold: #f5c451;
+  --border: #29292e;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  overflow: hidden;
+}
+
+button, input { font: inherit; }
+button { color: inherit; cursor: pointer; }
+button:disabled { opacity: .45; cursor: not-allowed; }
+
+#app {
+  position: relative;
+  height: 100%;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+#cameraView {
+  position: absolute;
+  inset: 0;
+  background: #000;
+}
+
+#camera {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  inset: 0;
+}
+
+.camera-shade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgba(0,0,0,.48),
+    transparent 22%,
+    transparent 70%,
+    rgba(0,0,0,.62)
+  );
+}
+
+.topbar {
+  position: absolute;
+  top: calc(12px + var(--safe-top));
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 18px;
+  z-index: 3;
+}
+
+.brand {
+  font-size: 13px;
+  font-weight: 850;
+  letter-spacing: 4px;
+}
+
+.icon-btn {
+  width: 43px;
+  height: 43px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #ffffff22;
+  border-radius: 50%;
+  background: #101014aa;
+  backdrop-filter: blur(14px);
+}
+
+.icon-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+.top-counters {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.streak-pill {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 10px 13px;
+  border: 1px solid #ffffff25;
+  border-radius: 999px;
+  background: #101014aa;
+  backdrop-filter: blur(14px);
+  font-size: 13px;
+  font-weight: 750;
+}
+
+.currency-pill { border-color: #f5c45155; }
+.gold-star { color: var(--gold); font-size: 17px; line-height: 1; }
+
+.flame {
+  color: var(--accent);
+  width: 17px;
+  height: 17px;
+}
+
+#cameraHint {
+  position: absolute;
+  top: 18%;
+  left: 20px;
+  right: 20px;
+  text-align: center;
+  color: #fff;
+  font-size: 13px;
+  text-shadow: 0 1px 8px #000;
+  pointer-events: none;
+}
+
+.bottom-controls {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(22px + var(--safe-bottom));
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.mode-switch {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  padding: 4px;
+  background: #101014b8;
+  border: 1px solid #ffffff20;
+  border-radius: 999px;
+  backdrop-filter: blur(14px);
+}
+
+.mode {
+  border: 0;
+  background: transparent;
+  color: #b8b8bd;
+  padding: 9px 17px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 750;
+}
+
+.mode.active {
+  color: #fff;
+  background: #ffffff20;
+}
+
+.capture-row {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  min-height: 78px;
+}
+
+.capture-btn {
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  border: 4px solid #ffffff;
+  background: transparent;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 0 0 2px #0007;
+}
+
+.capture-inner {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: #fff;
+  transition: border-radius .15s, transform .15s;
+}
+
+.capture-btn:active .capture-inner { transform: scale(.9); }
+
+.capture-btn.recording .capture-inner {
+  width: 26px;
+  height: 26px;
+  border-radius: 7px;
+  background: var(--accent);
+}
+
+.side-action {
+  position: absolute;
+  right: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  border: 0;
+  background: transparent;
+  color: #fff;
+  font-size: 11px;
+}
+
+.side-action svg { width: 22px; height: 22px; }
+
+#recordingTime {
+  display: none;
+  position: absolute;
+  left: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #b91c1c;
+  border-radius: 6px;
+  padding: 7px 9px;
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+
+#recordingTime.visible { display: block; }
+
+#previewView,
+#settingsView,
+#streakView,
+#currencyView,
+#setupView {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: none;
+  flex-direction: column;
+  background: var(--bg);
+}
+
+#previewView.open,
+#settingsView.open,
+#streakView.open,
+#currencyView.open,
+#setupView.open {
+  display: flex;
+}
+
+.view-header {
+  padding: calc(14px + var(--safe-top)) 20px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+}
+
+.view-title { font-size: 15px; font-weight: 750; }
+
+.close-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  display: grid;
+  place-items: center;
+}
+
+.close-btn svg { width: 18px; height: 18px; }
+
+#previewMedia {
+  min-height: 0;
+  flex: 1;
+  width: 100%;
+  object-fit: contain;
+  background: #000;
+}
+
+.preview-footer {
+  padding: 18px 20px calc(18px + var(--safe-bottom));
+  display: flex;
+  gap: 12px;
+}
+
+.btn {
+  min-height: 51px;
+  padding: 0 18px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  font-size: 13px;
+  font-weight: 750;
+  background: var(--panel);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn svg { width: 18px; height: 18px; }
+.btn.primary { background: var(--accent); color: #17100d; border-color: var(--accent); }
+.btn.full { width: 100%; }
+.btn.flex { flex: 1; }
+.btn:active { transform: scale(.985); }
+
+.page-content {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 24px 20px calc(24px + var(--safe-bottom));
+  scrollbar-width: none;
+}
+
+.page-content::-webkit-scrollbar { display: none; }
+
+.section-label {
+  color: var(--muted);
+  font-size: 10px;
+  letter-spacing: 2px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.setting-card {
+  margin-top: 10px;
+  padding: 16px;
+  border: 1px solid var(--border);
+  background: var(--panel);
+  border-radius: 16px;
+}
+
+.field-label {
+  display: block;
+  font-size: 12px;
+  color: #c9c9ce;
+  margin-bottom: 10px;
+}
+
+.field {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  padding: 14px;
+  color: var(--text);
+  background: #0c0c0f;
+  border: 1px solid #303036;
+  border-radius: 11px;
+  outline: none;
+  font-size: 13px;
+}
+
+.field:focus { border-color: var(--accent); }
+
+.field-help {
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.6;
+  margin-top: 10px;
+}
+
+.setting-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 15px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.setting-row:last-child { border-bottom: 0; }
+.row-name { font-size: 13px; font-weight: 650; }
+
+.row-description {
+  color: var(--muted);
+  font-size: 11px;
+  margin-top: 5px;
+  line-height: 1.5;
+}
+
+.row-value {
+  color: var(--muted);
+  font-size: 12px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.streak-hero {
+  padding: 38px 0 30px;
+  text-align: center;
+}
+
+.streak-flame {
+  width: 78px;
+  height: 78px;
+  margin: auto auto 17px;
+  color: var(--accent);
+  animation: float 2.5s ease-in-out infinite;
+}
+
+.streak-number {
+  font-size: 76px;
+  line-height: 1;
+  font-weight: 850;
+  letter-spacing: -5px;
+  overflow-wrap: anywhere;
+}
+
+.streak-caption { color: var(--muted); font-size: 12px; margin-top: 12px; }
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.stat-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 15px;
+  padding: 17px;
+  min-width: 0;
+}
+
+.stat-number { font-size: 25px; font-weight: 800; margin-top: 9px; overflow-wrap: anywhere; }
+.stat-label { font-size: 11px; color: var(--muted); }
+
+.countdown-card {
+  margin-top: 12px;
+  padding: 18px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 15px;
+}
+
+.countdown-value {
+  font-size: 24px;
+  font-weight: 750;
+  font-variant-numeric: tabular-nums;
+  margin-top: 8px;
+}
+
+.progress-track {
+  margin-top: 14px;
+  height: 4px;
+  background: #303036;
+  border-radius: 9px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  width: 0%;
+  background: var(--accent);
+  transition: width .4s linear;
+}
+
+.currency-hero-symbol { color: var(--gold); font-size: 54px; line-height: 1; margin-bottom: 18px; }
+#buyFreeze { margin-top: 12px; }
+#reviveStreak { margin-top: 12px; }
+#nightFreezePrompt { display: none; }
+
+#nightFreezePrompt.open {
+  position: absolute;
+  inset: 0;
+  z-index: 26;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: #09090bf2;
+}
+
+.night-modal {
+  width: 100%;
+  max-width: 360px;
+  padding: 24px;
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  background: var(--panel);
+  text-align: center;
+}
+
+.night-icon { font-size: 42px; margin-bottom: 14px; }
+.night-title { font-size: 22px; font-weight: 850; }
+.night-copy { color: var(--muted); font-size: 13px; line-height: 1.7; margin: 12px 0 20px; }
+
+#toast {
+  position: absolute;
+  z-index: 30;
+  left: 20px;
+  right: 20px;
+  bottom: calc(25px + var(--safe-bottom));
+  padding: 14px 16px;
+  border: 1px solid #ffffff18;
+  background: #202024f2;
+  border-radius: 13px;
+  font-size: 12px;
+  line-height: 1.5;
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
+  transition: opacity .2s, transform .2s;
+}
+
+#toast.show { opacity: 1; transform: translateY(0); }
+#toast.success { border-color: #267a50; }
+#toast.error { border-color: #a93a3a; }
+
+#uploadOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 25;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 15px;
+  background: #09090bf0;
+  padding: 30px;
+  text-align: center;
+}
+
+#uploadOverlay.open { display: flex; }
+
+.spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid #35353b;
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+}
+
+#uploadMessage { font-size: 13px; font-weight: 650; }
+#uploadSubtext { color: var(--muted); font-size: 11px; }
+
+#celebration {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  pointer-events: none;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 10px;
+  background: #09090b30;
+}
+
+#celebration.show {
+  display: flex;
+  animation: celebrate 5s ease both;
+}
+
+.celebration-flame { color: var(--accent); width: 72px; height: 72px; }
+.celebration-text { font-size: 24px; font-weight: 850; text-shadow: 0 2px 20px #000; }
+.celebration-sub { font-size: 12px; color: #eee; }
+
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes float { 50% { transform: translateY(-5px); } }
+
+@keyframes celebrate {
+  0% { opacity: 0; transform: scale(.7); }
+  12% { opacity: 1; transform: scale(1.08); }
+  22% { opacity: 1; transform: scale(1); }
+  85% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1); }
+}
+
+@media (max-width: 360px) {
+  .topbar { padding: 0 12px; }
+  .top-counters { gap: 5px; }
+  .streak-pill { padding: 9px 10px; gap: 5px; }
+  .brand { letter-spacing: 2px; font-size: 11px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+  }
+}
 </style>
 </head>
+
 <body>
-<main class="app">
-<header class="topbar"><div class="brand">STREAK<span>.</span></div><button class="icon-btn" id="settingsOpen" aria-label="Settings">⚙</button></header>
-<section class="view active" id="homeView">
-<div class="hero"><div class="eyebrow">Consistency, captured</div><h1>Show up.<br>Every day.</h1><p>Take a photo or video, send it to your private Discord channel, and keep your streak alive.</p></div>
-<div class="card"><div class="streak-row"><div><div class="eyebrow">Current streak</div><div class="streak-number"><span id="streakCount">0</span> <small>days</small></div></div><div class="pill" id="streakPill">READY TO START</div></div><div class="countdown" id="countdown">CHECK IN</div><div class="progress"><div id="deadlineProgress"></div></div><p class="small" id="deadlineMessage">Send a photo or video successfully to start your two-hour window.</p></div>
-<div class="button-stack"><button class="btn primary" id="takePhotoBtn">◎ &nbsp; Take a photo</button><button class="btn secondary" id="recordVideoBtn">▣ &nbsp; Record a video</button><label class="file-label" for="mediaPicker">＋ &nbsp; Choose photo or video</label><input type="file" id="mediaPicker" accept="image/*,video/*" class="hidden"></div>
-<div id="capturePreviewWrap" class="card hidden"><div class="section-head"><h2 class="section-title">Ready to send</h2><button class="icon-btn" id="discardCapture" aria-label="Discard capture">×</button></div><video id="previewVideo" class="camera-preview hidden" controls playsinline></video><img id="previewImage" class="camera-preview hidden" alt="Selected check-in preview"><div class="field"><label for="captionInput">Optional caption</label><input id="captionInput" maxlength="500" placeholder="A quick note (optional)"></div><button class="btn primary" id="sendBtn" style="margin-top:14px">Send to Discord ↗</button><div class="notice hidden" id="uploadNotice"></div></div>
-<div class="stat-grid"><div class="stat"><strong id="bestCount">0</strong><span>Best streak</span></div><div class="stat"><strong id="totalCount">0</strong><span>Successful uploads</span></div></div>
-<div class="card"><div class="section-head"><div><h2 class="section-title">Your streak toolkit</h2><div class="small">SPARK is earned after successful uploads.</div></div><button class="btn secondary" style="width:auto;min-height:40px;padding:10px 13px" id="streakPageBtn">Open ↗</button></div><div class="stat-grid"><div class="stat"><strong id="sparkCount">0</strong><span>✦ SPARK</span></div><div class="stat"><strong id="freezeCount">0</strong><span>Purchased freezes</span></div></div></div>
-</section>
-<section class="view" id="streakView"><div class="eyebrow">Progress & protection</div><h1 style="font-size:38px;letter-spacing:-.06em;margin:8px 0">Your streak.</h1><div class="card"><div class="streak-row"><div><div class="eyebrow">Current run</div><div class="streak-number"><span id="streakCount2">0</span> <small>days</small></div></div><div class="pill" id="streakPill2">READY</div></div><div class="countdown" id="countdown2">CHECK IN</div><div class="progress"><div id="deadlineProgress2"></div></div><p class="small" id="deadlineMessage2">Your timer begins after a successful upload.</p></div>
-<div class="setting-card"><div class="row-name">✦ SPARK balance</div><div class="row-description">Earn 1 SPARK per successful upload. Use it to buy a four-hour streak freeze or revive a lost streak.</div><div class="streak-row" style="margin-top:12px"><strong style="font-size:28px" id="sparkCount2">0</strong><span class="badge-free">Earned by check-ins</span></div></div>
-<div class="setting-card"><div class="row-name">⏳ Streak freeze · 15 SPARK</div><div class="row-description">Buy one freeze. If you miss the two-hour window, it extends your protection by another two hours.</div><button class="btn secondary" id="buyFreezeBtn" style="margin-top:12px">Buy freeze · 15 SPARK</button><p class="small" id="freezeInventoryText">You have 0 purchased freezes.</p></div>
-<div class="setting-card"><div class="row-name">🌙 Night Freeze <span class="badge-free">Free</span></div><div class="row-description">Between 9:00 PM and 6:59 AM, pause your timer for nine hours so you can sleep. Available once per night after a successful check-in.</div><button class="btn secondary" id="nightFreezeBtn" style="margin-top:12px">Activate Night Freeze</button><p class="small" id="nightFreezeStatus">Available after a successful check-in during the night window.</p></div>
-<div class="setting-card hidden" id="reviveCard"><div class="row-name">🔥 Lost your streak?</div><div class="row-description" id="reviveDescription">Restore your previous streak for 25 SPARK.</div><button class="btn primary" id="reviveButton" style="margin-top:12px">Revive streak · 25 SPARK</button></div>
-<button class="btn ghost back" id="streakBackBtn">← Back to camera</button></section>
-<section class="view" id="settingsView"><div class="eyebrow">Personal setup</div><h1 style="font-size:38px;letter-spacing:-.06em;margin:8px 0">Settings.</h1><div class="card"><h2 class="section-title">Discord webhook</h2><p class="muted">Uploads go to the channel connected to this webhook. Keep the URL private.</p><div class="field"><label for="webhookInput">Webhook URL</label><input id="webhookInput" type="password" autocomplete="off" spellcheck="false" placeholder="https://discord.com/api/webhooks/…"></div><div class="two-col" style="margin-top:12px"><button class="btn primary" id="saveWebhookBtn">Save webhook</button><button class="btn secondary" id="testWebhookBtn">Test webhook</button></div><button class="btn ghost" id="toggleWebhookBtn" style="margin-top:8px;min-height:42px">Show webhook URL</button><div class="notice" id="webhookStatus">No webhook configured yet.</div><p class="note">The webhook is saved in this browser's local storage. Avoid sharing this file with your webhook prefilled.</p></div>
-<div class="card"><h2 class="section-title">Data & privacy</h2><p class="muted">Your streak counters are stored on this device. Media is sent to Discord when you tap Send; this app does not create a personal gallery.</p><button class="btn secondary" id="exportDataBtn">Export streak backup</button><button class="btn ghost" id="resetDataBtn" style="margin-top:8px">Reset streak data</button></div><button class="btn ghost back" id="settingsBackBtn">← Back</button></section>
-<div class="footer">STREAK · Progress over perfection</div>
-</main>
-<div class="overlay" id="cameraModal" role="dialog" aria-modal="true" aria-label="Camera"><div class="modal"><div class="section-head"><h2 class="section-title">Camera</h2><button class="icon-btn" id="closeCameraBtn" aria-label="Close camera">×</button></div><video id="liveVideo" autoplay playsinline muted class="camera-preview"></video><div class="modal-actions"><button class="btn secondary" id="cancelCameraBtn">Cancel</button><button class="btn primary" id="capturePhotoNow">Take photo</button><button class="btn primary hidden" id="startRecording">Record</button><button class="btn primary hidden" id="stopRecording">Stop</button></div><p class="note">Camera access is requested only when you open the camera.</p></div></div>
-<div class="celebration" id="celebration" aria-live="polite"><div class="celebrate-card"><div class="fire">🔥✨🔥</div><h2 id="celebrationText">Streak 1</h2><p id="celebrationSub"><span class="spark">+1 SPARK</span> · Successfully sent to Discord</p></div></div>
-<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div id="app">
+
+  <main id="cameraView">
+    <video id="camera" autoplay playsinline muted></video>
+    <div class="camera-shade"></div>
+
+    <header class="topbar">
+      <button class="icon-btn" id="openSettings" aria-label="Settings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path d="m19.4 15 .1.1 1.4 1.1-1.5 2.6-1.7-.6a8 8 0 0 1-1.8 1l-.3 1.8h-3l-.3-1.8a8 8 0 0 1-1.8-1l-1.7.6-1.5-2.6 1.4-1.1a7 7 0 0 1 0-2l-1.4-1.1 1.5-2.6 1.7.6a8 8 0 0 1 1.8-1l.3-1.8h3l.3 1.8a8 8 0 0 1 1.8 1l1.7-.6 1.5 2.6-1.4 1.1a7 7 0 0 1 0 2Z" transform="translate(-1 -1) scale(.95)"></path>
+        </svg>
+      </button>
+
+      <div class="brand">STREAK</div>
+
+      <div class="top-counters">
+        <button class="streak-pill currency-pill" id="openCurrency" aria-label="View SPARK currency">
+          <span class="gold-star">✦</span>
+          <span id="topCurrency">0</span>
+        </button>
+
+        <button class="streak-pill" id="openStreak" aria-label="View streak">
+          <svg class="flame" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M13.5 1.7c.5 4-1.5 5.3-3 7.2C9.2 10.4 9 11.4 9.4 13c-1.8-.9-2.7-2.8-2.4-4.6C4.3 11 3 13.5 3.5 16.1A8.6 8.6 0 0 0 12 23a8.5 8.5 0 0 0 8.5-8.5c0-4.5-3.2-8.5-7-12.8Z"/>
+          </svg>
+          <span id="topStreak">0</span>
+        </button>
+      </div>
+    </header>
+
+    <div id="cameraHint">Capture a moment. Keep your streak alive.</div>
+
+    <div class="bottom-controls">
+      <div class="mode-switch">
+        <button class="mode active" id="photoMode">PHOTO</button>
+        <button class="mode" id="videoMode">VIDEO</button>
+      </div>
+
+      <div class="capture-row">
+        <div id="recordingTime">00:00</div>
+
+        <button class="capture-btn" id="captureButton" aria-label="Take photo">
+          <span class="capture-inner"></span>
+        </button>
+
+        <button class="side-action" id="switchCamera" aria-label="Switch camera">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+            <path d="M20 7h-3l-2-3H9L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2Z"/>
+            <circle cx="12" cy="13" r="4"/>
+          </svg>
+          Flip
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <section id="previewView" aria-label="Capture preview">
+    <header class="view-header">
+      <button class="close-btn" id="retakeButton" aria-label="Retake">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path d="M19 12a7 7 0 0 1-12.1 4.8L4 14M5 19v-5h5M5 12a7 7 0 0 1 12.1-4.8L20 10M19 5v5h-5"/>
+        </svg>
+      </button>
+      <span class="view-title">Preview</span>
+      <span style="width:38px"></span>
+    </header>
+
+    <video id="previewMedia" playsinline controls></video>
+
+    <div class="preview-footer">
+      <button class="btn flex" id="discardButton">Retake</button>
+      <button class="btn primary flex" id="sendButton">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7Z"/>
+        </svg>
+        Send to Discord
+      </button>
+    </div>
+  </section>
+
+  <section id="settingsView">
+    <header class="view-header">
+      <button class="close-btn" id="closeSettings" aria-label="Back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path d="m15 18-6-6 6-6"/>
+        </svg>
+      </button>
+      <span class="view-title">Settings</span>
+      <span style="width:38px"></span>
+    </header>
+
+    <div class="page-content">
+      <div class="section-label">Discord connection</div>
+
+      <div class="setting-card">
+        <label class="field-label" for="webhookInput">Webhook URL</label>
+        <input class="field" id="webhookInput" type="password"
+          placeholder="https://discord.com/api/webhooks/..."
+          autocomplete="off" spellcheck="false">
+
+        <div class="field-help">
+          The webhook is stored in localStorage. Anyone with access to your browser storage may be able to retrieve it.
+        </div>
+
+        <button class="btn primary full" id="saveWebhook" style="margin-top:16px">
+          Save webhook
+        </button>
+
+        <button class="btn full" id="testWebhook" style="margin-top:9px">
+          Test connection
+        </button>
+      </div>
+
+      <div class="section-label" style="margin-top:28px">Rewards</div>
+
+      <div class="setting-card">
+        <div class="setting-row">
+          <div>
+            <div class="row-name">Currency</div>
+            <div class="row-description">Earn 1 SPARK per successful upload.</div>
+          </div>
+          <div class="row-value">SPARK</div>
+        </div>
+
+        <div class="setting-row">
+          <div>
+            <div class="row-name">Streak freeze</div>
+            <div class="row-description">One freeze extends a check-in deadline to four hours.</div>
+          </div>
+          <div class="row-value">15 SPARK</div>
+        </div>
+
+        <div class="setting-row">
+          <div>
+            <div class="row-name">Night Freeze</div>
+            <div class="row-description">Pause the countdown for nine hours, once per night, between 9 PM and 7 AM.</div>
+          </div>
+          <div class="row-value">Free</div>
+        </div>
+
+        <div class="setting-row">
+          <div>
+            <div class="row-name">Streak Revive</div>
+            <div class="row-description">Restore your previous streak within 24 hours of losing it.</div>
+          </div>
+          <div class="row-value">25 SPARK</div>
+        </div>
+      </div>
+
+      <div class="section-label" style="margin-top:28px">App</div>
+
+      <div class="setting-card">
+        <div class="setting-row">
+          <div>
+            <div class="row-name">Check-in interval</div>
+            <div class="row-description">Time between successful uploads.</div>
+          </div>
+          <div class="row-value">2 hours</div>
+        </div>
+
+        <div class="setting-row">
+          <div>
+            <div class="row-name">Personal gallery</div>
+            <div class="row-description">Captured files aren't saved as a gallery.</div>
+          </div>
+          <div class="row-value">Off</div>
+        </div>
+
+        <div class="setting-row">
+          <div>
+            <div class="row-name">Progress data</div>
+            <div class="row-description">Streak, currency, freezes and revive data are stored locally.</div>
+          </div>
+          <div class="row-value">Local</div>
+        </div>
+      </div>
+
+      <p class="field-help">
+        Clearing site storage can erase your progress. Use the same browser and installed PWA to retain it.
+      </p>
+    </div>
+  </section>
+
+  <section id="streakView">
+    <header class="view-header">
+      <button class="close-btn" id="closeStreak" aria-label="Back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path d="m15 18-6-6 6-6"/>
+        </svg>
+      </button>
+      <span class="view-title">Your streak</span>
+      <span style="width:38px"></span>
+    </header>
+
+    <div class="page-content">
+      <div class="streak-hero">
+        <svg class="streak-flame" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M13.5 1.7c.5 4-1.5 5.3-3 7.2C9.2 10.4 9 11.4 9.4 13c-1.8-.9-2.7-2.8-2.4-4.6C4.3 11 3 13.5 3.5 16.1A8.6 8.6 0 0 0 12 23a8.5 8.5 0 0 0 8.5-8.5c0-4.5-3.2-8.5-7-12.8Z"/>
+        </svg>
+
+        <div class="streak-number" id="streakNumber">0</div>
+        <div class="streak-caption">successful uploads in your current streak</div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-label">BEST STREAK</div>
+          <div class="stat-number" id="bestStreak">0</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-label">TOTAL UPLOADS</div>
+          <div class="stat-number" id="totalUploads">0</div>
+        </div>
+      </div>
+
+      <div class="countdown-card">
+        <div class="section-label">NEXT CHECK-IN DEADLINE</div>
+        <div class="countdown-value" id="countdown">--:--:--</div>
+        <div class="field-help" id="deadlineMessage">
+          A successful upload starts your two-hour window.
+        </div>
+        <div class="progress-track">
+          <div class="progress-bar" id="deadlineProgress"></div>
+        </div>
+      </div>
+
+      <div class="setting-card">
+        <div class="setting-row">
+          <div>
+            <div class="row-name">SPARK balance</div>
+            <div class="row-description">Currency available for rewards.</div>
+          </div>
+          <div class="row-value" id="streakCurrency">0 SPARK</div>
+        </div>
+
+        <div class="setting-row">
+          <div>
+            <div class="row-name">Streak freezes</div>
+            <div class="row-description">Available automatic deadline extensions.</div>
+          </div>
+          <div class="row-value" id="streakFreezes">0 owned</div>
+        </div>
+
+        <div class="setting-row">
+          <div>
+            <div class="row-name">Previous streak</div>
+            <div class="row-description" id="previousStreakMessage">No lost streak available to revive.</div>
+          </div>
+          <div class="row-value" id="previousStreakValue">—</div>
+        </div>
+      </div>
+
+      <button class="btn primary full" id="reviveStreak" style="display:none">
+        Revive streak · 25 SPARK
+      </button>
+
+      <button class="btn primary full" id="backToCamera" style="margin-top:18px">
+        Back to camera
+      </button>
+    </div>
+  </section>
+
+  <section id="currencyView">
+    <header class="view-header">
+      <button class="close-btn" id="closeCurrency" aria-label="Back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path d="m15 18-6-6 6-6"/>
+        </svg>
+      </button>
+      <span class="view-title">SPARK</span>
+      <span style="width:38px"></span>
+    </header>
+
+    <div class="page-content">
+      <div class="streak-hero">
+        <div class="currency-hero-symbol">✦</div>
+        <div class="streak-number" id="currencyBalance">0</div>
+        <div class="streak-caption">SPARK available</div>
+      </div>
+
+      <div class="setting-card">
+        <div class="setting-row">
+          <div>
+            <div class="row-name">Streak freeze</div>
+            <div class="row-description">
+              Extends your next two-hour deadline to four hours when needed.
+            </div>
+          </div>
+          <div class="row-value" id="freezeCount">0 owned</div>
+        </div>
+
+        <button class="btn primary full" id="buyFreeze">
+          Get a freeze · 15 SPARK
+        </button>
+
+        <p class="field-help">
+          A freeze is consumed automatically when the two-hour deadline arrives, provided the four-hour deadline has not already passed.
+        </p>
+      </div>
+
+      <div class="setting-card">
+        <div class="row-name">Streak Revive</div>
+        <div class="row-description">
+          Lost your streak? Restore your previous streak for 25 SPARK within 24 hours of losing it.
+        </div>
+
+        <button class="btn primary full" id="reviveStreakCurrency" style="margin-top:12px;display:none">
+          Revive streak · 25 SPARK
+        </button>
+
+        <p class="field-help" id="reviveCurrencyMessage">
+          No lost streak is currently available to revive.
+        </p>
+      </div>
+
+      <button class="btn full" id="currencyBackToCamera" style="margin-top:12px">
+        Back to camera
+      </button>
+    </div>
+  </section>
+
+  <section id="setupView">
+    <div class="page-content" style="display:flex;flex-direction:column;justify-content:center">
+      <div style="font-size:11px;letter-spacing:4px;font-weight:850;margin-bottom:22px">
+        STREAK
+      </div>
+
+      <div style="font-size:32px;line-height:1.15;font-weight:850;letter-spacing:-1px">
+        Every moment<br>counts.
+      </div>
+
+      <p style="font-size:13px;line-height:1.7;color:var(--muted);margin:16px 0 28px">
+        Connect Discord to start. Each successful photo or video upload increases your streak and earns SPARK.
+      </p>
+
+      <label class="field-label" for="setupWebhook">Discord webhook URL</label>
+
+      <input class="field" id="setupWebhook" type="password"
+        placeholder="https://discord.com/api/webhooks/..."
+        autocomplete="off" spellcheck="false">
+
+      <p class="field-help">
+        Create a webhook in your Discord channel's integration settings. Keep the URL private.
+      </p>
+
+      <button class="btn primary full" id="connectDiscord" style="margin-top:16px">
+        Connect Discord
+      </button>
+
+      <button class="btn full" id="skipSetup" style="margin-top:9px">
+        Continue without connecting
+      </button>
+    </div>
+  </section>
+
+  <div id="nightFreezePrompt" role="dialog" aria-modal="true" aria-labelledby="nightFreezeTitle">
+    <div class="night-modal">
+      <div class="night-icon">🌙</div>
+      <div class="night-title" id="nightFreezeTitle">Time to rest?</div>
+      <div class="night-copy">
+        Freeze your streak countdown for 9 hours and go to bed. Your normal countdown resumes after the freeze ends.
+      </div>
+      <button class="btn primary full" id="activateNightFreeze">
+        Freeze streak &amp; go to bed
+      </button>
+      <button class="btn full" id="skipNightFreeze" style="margin-top:9px">
+        Not now
+      </button>
+    </div>
+  </div>
+
+  <div id="uploadOverlay">
+    <div class="spinner" id="uploadSpinner"></div>
+    <div id="uploadMessage">Sending to Discord…</div>
+    <div id="uploadSubtext">Your streak changes only after a successful upload.</div>
+  </div>
+
+  <div id="celebration">
+    <svg class="celebration-flame" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M13.5 1.7c.5 4-1.5 5.3-3 7.2C9.2 10.4 9 11.4 9.4 13c-1.8-.9-2.7-2.8-2.4-4.6C4.3 11 3 13.5 3.5 16.1A8.6 8.6 0 0 0 12 23a8.5 8.5 0 0 0 8.5-8.5c0-4.5-3.2-8.5-7-12.8Z"/>
+    </svg>
+    <div class="celebration-text" id="celebrationText">Streak increased!</div>
+    <div class="celebration-sub" id="celebrationSub">Successfully sent to Discord</div>
+  </div>
+
+  <div id="toast" role="status" aria-live="polite"></div>
+</div>
+
 <script>
-(()=>{'use strict';
-const $=id=>document.getElementById(id);
-const TWO_HOURS=2*60*60*1000, FOUR_HOURS=4*60*60*1000, NIGHT_FREEZE_MS=9*60*60*1000, REVIVE_WINDOW_MS=24*60*60*1000, MAX_RECORDING_MS=10*60*1000, MAX_UPLOAD_BYTES=24*1024*1024, FREEZE_PRICE=15, REVIVE_PRICE=25;
-const KEYS={webhook:'streak.webhook.v1',streak:'streak.data.v1'};
-const DEFAULT_STATE={streak:0,best:0,total:0,lastSuccess:0,currency:0,freezes:0,freezeActive:false,previousStreak:0,streakLostAt:0,nightFreezeUntil:0,nightFreezeUsedNight:''};
-let state=loadState(),captureBlob=null,captureKind='',captureName='',cameraStream=null,mediaRecorder=null,recordedChunks=[],recordingTimer=null,celebrationTimer=null,toastTimer=null;
-function nonNegativeInt(v){const n=Number(v);return Number.isFinite(n)&&n>=0?Math.floor(n):0}
-function validTimestamp(v){const n=Number(v);return Number.isFinite(n)&&n>0&&n<=Date.now()+60000?n:0}
-function loadState(){try{const p=JSON.parse(localStorage.getItem(KEYS.streak)||'{}');return {...DEFAULT_STATE,streak:nonNegativeInt(p.streak),best:nonNegativeInt(p.best),total:nonNegativeInt(p.total),lastSuccess:validTimestamp(p.lastSuccess),currency:nonNegativeInt(p.currency),freezes:nonNegativeInt(p.freezes),freezeActive:!!p.freezeActive,previousStreak:nonNegativeInt(p.previousStreak),streakLostAt:validTimestamp(p.streakLostAt),nightFreezeUntil:(Number.isFinite(Number(p.nightFreezeUntil))&&Number(p.nightFreezeUntil)>0&&Number(p.nightFreezeUntil)<Date.now()+NIGHT_FREEZE_MS+60000)?Number(p.nightFreezeUntil):0,nightFreezeUsedNight:typeof p.nightFreezeUsedNight==='string'?p.nightFreezeUsedNight:''}}catch{return {...DEFAULT_STATE}}}
-function saveState(){try{localStorage.setItem(KEYS.streak,JSON.stringify(state))}catch{}updateStreakUI()}
-function getWebhook(){try{return localStorage.getItem(KEYS.webhook)||''}catch{return ''}}
-function setWebhook(v){try{localStorage.setItem(KEYS.webhook,v)}catch{}}
-function showToast(msg,kind=''){const el=$('toast');el.textContent=msg;el.className='toast show';if(kind==='error')el.style.borderColor='#8d3434';else el.style.borderColor='';clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),2600)}
-function showNotice(id,msg,kind=''){const el=$(id);el.textContent=msg;el.classList.remove('hidden','good','bad');if(kind)el.classList.add(kind)}
-function showView(name){document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));$(name+'View').classList.add('active');if(name==='settings'){ $('webhookInput').value=getWebhook();$('webhookStatus').textContent=getWebhook()?'Webhook saved on this device.':'No webhook configured yet.' }updateStreakUI()}
-function formatRemaining(ms){if(ms<=0)return '00:00:00';const s=Math.ceil(ms/1000),h=Math.floor(s/3600),m=Math.floor((s%3600)/60),sec=s%60;return [h,m,sec].map(n=>String(n).padStart(2,'0')).join(':')}
-function getDeadline(){if(!state.lastSuccess||state.streak<=0)return 0;const nightExtension=state.nightFreezeUntil>0?NIGHT_FREEZE_MS:0;return state.lastSuccess+TWO_HOURS+nightExtension+(state.freezeActive?TWO_HOURS:0)}
-function updateStreakUI(){const ids=[['streakCount',state.streak],['streakCount2',state.streak],['bestCount',state.best],['totalCount',state.total],['sparkCount',state.currency],['sparkCount2',state.currency],['freezeCount',state.freezes]];ids.forEach(([id,val])=>{if($(id))$(id).textContent=val});const pill=state.streak?'🔥 '+state.streak+' IN A ROW':'READY TO START';['streakPill','streakPill2'].forEach(id=>{if($(id))$(id).textContent=pill});const reviveRemaining=REVIVE_WINDOW_MS-(Date.now()-state.streakLostAt);const reviveAvailable=state.streak===0&&state.previousStreak>0&&state.streakLostAt>0&&reviveRemaining>0;$('reviveCard').classList.toggle('hidden',!reviveAvailable);$('reviveButton').disabled=state.currency<REVIVE_PRICE;if(reviveAvailable){const hours=Math.ceil(reviveRemaining/3600000);$('reviveDescription').textContent=`Restore your previous streak of ${state.previousStreak} for ${REVIVE_PRICE} SPARK. ${hours} hour(s) left to revive.`}
-$('buyFreezeBtn').disabled=state.currency<FREEZE_PRICE;$('freezeInventoryText').textContent=`You have ${state.freezes} purchased freeze${state.freezes===1?'':'s'}.`;$('nightFreezeBtn').disabled=state.streak<=0||!isNightWindow()||state.nightFreezeUsedNight===getNightKey()||state.nightFreezeUntil>Date.now();if(state.nightFreezeUntil>Date.now())$('nightFreezeStatus').textContent='Night Freeze active until '+new Date(state.nightFreezeUntil).toLocaleTimeString([],{hour:'numeric',minute:'2-digit'})+'.';else if(state.nightFreezeUsedNight===getNightKey())$('nightFreezeStatus').textContent='Already used tonight. You can activate it again tomorrow night.';else if(!isNightWindow())$('nightFreezeStatus').textContent='Available from 9:00 PM to 6:59 AM after a successful check-in.';else $('nightFreezeStatus').textContent='Ready to use tonight. Pauses the timer for 9 hours from activation.';
-const deadline=getDeadline();if(!state.lastSuccess||state.streak<=0||!deadline){['countdown','countdown2'].forEach(id=>$(id).textContent='CHECK IN');['deadlineProgress','deadlineProgress2'].forEach(id=>$(id).style.width='0%');$('deadlineMessage').textContent='Send a photo or video successfully to start your two-hour window.';$('deadlineMessage2').textContent='Your timer begins after a successful upload.';return}const now=Date.now(),remaining=deadline-now,duration=TWO_HOURS+(state.nightFreezeUntil>0?NIGHT_FREEZE_MS:0)+(state.freezeActive?TWO_HOURS:0),progress=Math.max(0,Math.min(100,(remaining/duration)*100));['countdown','countdown2'].forEach(id=>$(id).textContent=remaining>0?formatRemaining(remaining):'0
+"use strict";
+
+(() => {
+  const $ = id => document.getElementById(id);
+
+  const TWO_HOURS = 2 * 60 * 60 * 1000;
+  const FOUR_HOURS = 4 * 60 * 60 * 1000;
+  const NINE_HOURS = 9 * 60 * 60 * 1000;
+  const REVIVE_WINDOW = 24 * 60 * 60 * 1000;
+  const MAX_RECORDING_MS = 10 * 60 * 1000;
+  const MAX_UPLOAD_BYTES = 24 * 1024 * 1024;
+  const FREEZE_PRICE = 15;
+  const REVIVE_PRICE = 25;
+
+  const KEYS = {
+    webhook: "streak.webhook.v1",
+    streak: "streak.data.v1"
+  };
+
+  const DEFAULT_STATE = {
+    streak: 0,
+    best: 0,
+    total: 0,
+    lastSuccess: 0,
+    currency: 0,
+    freezes: 0,
+    freezeActive: false,
+
+    previousStreak: 0,
+    streakLostAt: 0,
+
+    nightFreezeUntil: 0,
+    nightFreezeApplied: false,
+    nightFreezeKey: ""
+  };
+
+  let state = loadState();
+  let stream = null;
+  let facingMode = "environment";
+  let mode = "photo";
+  let recorder = null;
+  let recordedChunks = [];
+  let recordingTimer = null;
+  let recordingStartedAt = 0;
+  let capturedBlob = null;
+  let capturedType = "";
+  let capturedUrl = null;
+  let uploading = false;
+  let toastTimer = null;
+  let celebrationTimer = null;
+  let countdownTimer = null;
+  let expiryCheckRunning = false;
+
+  const camera = $("camera");
+  const previewMedia = $("previewMedia");
+  const captureButton = $("captureButton");
+  const recordingTime = $("recordingTime");
+  const uploadOverlay = $("uploadOverlay");
+
+  function nonNegativeInt(value) {
+    const n = Number(value);
+    return Number.isSafeInteger(n) && n >= 0 ? n : 0;
+  }
+
+  function validTimestamp(value) {
+    const n = Number(value);
+    return Number.isFinite(n) && n > 0 && n <= Date.now() + 60000 ? n : 0;
+  }
+
+  function validFutureTimestamp(value) {
+    const n = Number(value);
+    return Number.isFinite(n) &&
+      n > Date.now() &&
+      n <= Date.now() + NINE_HOURS + 60000 ? n : 0;
+  }
+
+  function loadState() {
+    try {
+      const parsed = JSON.parse(localStorage.getItem(KEYS.streak) || "{}");
+
+      const loaded = {
+        ...DEFAULT_STATE,
+        streak: nonNegativeInt(parsed.streak),
+        best: nonNegativeInt(parsed.best),
+        total: nonNegativeInt(parsed.total),
+        lastSuccess: validTimestamp(parsed.lastSuccess),
+        currency: nonNegativeInt(parsed.currency),
+        freezes: nonNegativeInt(parsed.freezes),
+        freezeActive: parsed.freezeActive === true,
+
+        previousStreak: nonNegativeInt(parsed.previousStreak),
+        streakLostAt: validTimestamp(parsed.streakLostAt),
+
+        nightFreezeUntil: validFutureTimestamp(parsed.nightFreezeUntil),
+        nightFreezeApplied: parsed.nightFreezeApplied === true,
+        nightFreezeKey: typeof parsed.nightFreezeKey === "string"
+          ? parsed.nightFreezeKey
+          : ""
+      };
+
+      if (!loaded.lastSuccess || loaded.streak === 0) {
+        loaded.lastSuccess = 0;
+        loaded.streak = 0;
+        loaded.freezeActive = false;
+        loaded.nightFreezeUntil = 0;
+        loaded.nightFreezeApplied = false;
+      }
+
+      if (!loaded.streakLostAt || !loaded.previousStreak) {
+        loaded.streakLostAt = 0;
+        loaded.previousStreak = 0;
+      }
+
+      return loaded;
+    } catch {
+      return { ...DEFAULT_STATE };
+    }
+  }
+
+  function saveState() {
+    try {
+      localStorage.setItem(KEYS.streak, JSON.stringify(state));
+    } catch {
+      showToast("Could not save app data. Check browser storage settings.", "error");
+    }
+
+    updateStreakUI();
+  }
+
+  function getWebhook() {
+    try {
+      return (localStorage.getItem(KEYS.webhook) || "").trim();
+    } catch {
+      return "";
+    }
+  }
+
+  function setWebhook(value) {
+    try {
+      localStorage.setItem(KEYS.webhook, value.trim());
+      return true;
+    } catch {
+      showToast("Could not save webhook. Browser storage may be unavailable.", "error");
+      return false;
+    }
+  }
+
+  function isValidWebhook(value) {
+    try {
+      const url = new URL(value);
+
+      return url.protocol === "https:" &&
+        (url.hostname === "discord.com" || url.hostname === "discordapp.com") &&
+        /^\/api\/webhooks\/\d+\/[^/]+\/?$/.test(url.pathname);
+    } catch {
+      return false;
+    }
+  }
+
+  function showToast(message, type = "") {
+    const toast = $("toast");
+
+    clearTimeout(toastTimer);
+    toast.textContent = message;
+    toast.className = "show";
+
+    if (type) toast.classList.add(type);
+
+    toastTimer = setTimeout(() => {
+      toast.classList.remove("show");
+    }, 3800);
+  }
+
+  function closeOverlays() {
+    [
+      "previewView",
+      "settingsView",
+      "streakView",
+      "currencyView",
+      "setupView"
+    ].forEach(id => {
+      $(id).classList.remove("open");
+    });
+  }
+
+  function showView(view) {
+    closeOverlays();
+    if (view) $(view).classList.add("open");
+  }
+
+  /*
+   * Night Freeze:
+   * - Offered only after a successful upload between 9 PM and 7 AM.
+   * - Can be activated once per night.
+   * - Pauses the deadline for nine hours from activation.
+   * - After the pause, the remaining two-hour countdown resumes.
+   *
+   * Streak Revive:
+   * - The most recently lost streak is retained for 24 hours.
+   * - Reviving costs 25 SPARK.
+   */
+
+  function getNightKey(date = new Date()) {
+    const d = new Date(date);
+    const hour = d.getHours();
+
+    // The period after midnight belongs to the previous night's window.
+    if (hour < 7) {
+      d.setDate(d.getDate() - 1);
+    }
+
+    return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
+  }
+
+  function isNightWindow() {
+    const hour = new Date().getHours();
+    return hour >= 21 || hour < 7;
+  }
+
+  function canOfferNightFreeze() {
+    return state.streak > 0 &&
+      isNightWindow() &&
+      state.nightFreezeKey !== getNightKey();
+  }
+
+  function offerNightFreeze() {
+    if (canOfferNightFreeze()) {
+      $("nightFreezePrompt").classList.add("open");
+    }
+  }
+
+  function dismissNightFreezePrompt() {
+    $("nightFreezePrompt").classList.remove("open");
+  }
+
+  function activateNightFreeze() {
+    if (!canOfferNightFreeze()) {
+      dismissNightFreezePrompt();
+      showToast("Night Freeze is unavailable right now.", "error");
+      return;
+    }
+
+    const now = Date.now();
+
+    state.nightFreezeKey = getNightKey();
+    state.nightFreezeApplied = true;
+    state.nightFreezeUntil = now + NINE_HOURS;
+
+    saveState();
+    dismissNightFreezePrompt();
+
+    showToast("Night Freeze activated for 9 hours. Sleep well.", "success");
+  }
+
+  function getNightExtension() {
+    return state.nightFreezeApplied ? NINE_HOURS : 0;
+  }
+
+  function hasReviveAvailable() {
+    if (state.previousStreak <= 0 || state.streakLostAt <= 0) {
+      return false;
+    }
+
+    const elapsed = Date.now() - state.streakLostAt;
+
+    return elapsed >= 0 && elapsed <= REVIVE_WINDOW;
+  }
+
+  function resetExpiredStreak() {
+    if (state.streak > 0) {
+      // Preserve the previous streak BEFORE resetting the current streak.
+      state.previousStreak = state.streak;
+      state.streakLostAt = Date.now();
+    }
+
+    state.streak = 0;
+    state.lastSuccess = 0;
+    state.freezeActive = false;
+    state.nightFreezeUntil = 0;
+    state.nightFreezeApplied = false;
+
+    saveState();
+  }
+
+  function checkExpiry() {
+    if (expiryCheckRunning) return;
+    expiryCheckRunning = true;
+
+    try {
+      if (state.streak <= 0 || state.lastSuccess <= 0) {
+        if (state.streak !== 0 || state.lastSuccess !== 0 || state.freezeActive) {
+          state.streak = 0;
+          state.lastSuccess = 0;
+          state.freezeActive = false;
+          state.nightFreezeUntil = 0;
+          state.nightFreezeApplied = false;
+          saveState();
+        }
+        return;
+      }
+
+      const now = Date.now();
+
+      // While Night Freeze is active, the deadline countdown is paused.
+      if (state.nightFreezeApplied && state.nightFreezeUntil > now) {
+        return;
+      }
+
+      if (state.nightFreezeApplied && state.nightFreezeUntil <= now) {
+        state.nightFreezeUntil = 0;
+        saveState();
+      }
+
+      const extension = getNightExtension();
+      const normalDeadline = state.lastSuccess + TWO_HOURS + extension;
+      const protectedDeadline = state.lastSuccess + FOUR_HOURS + extension;
+
+      if (state.freezeActive) {
+        if (now >= protectedDeadline) {
+          resetExpiredStreak();
+          showToast("Your streak expired. You can revive it for 25 SPARK.", "error");
+        }
+        return;
+      }
+
+      if (now < normalDeadline) {
+        return;
+      }
+
+      if (now >= protectedDeadline) {
+        resetExpiredStreak();
+        showToast("Your streak expired. You can revive it for 25 SPARK.", "error");
+        return;
+      }
+
+      if (state.freezes > 0) {
+        state.freezes -= 1;
+        state.freezeActive = true;
+        saveState();
+
+        showToast("Streak freeze activated. You have two extra hours.", "success");
+        return;
+      }
+
+      resetExpiredStreak();
+      showToast("Your streak expired. You can revive it for 25 SPARK.", "error");
+    } finally {
+      expiryCheckRunning = false;
+    }
+  }
+
+  function reviveStreak() {
+    checkExpiry();
+
+    if (!hasReviveAvailable()) {
+      showToast("Your revive window has expired or there is no lost streak.", "error");
+      updateStreakUI();
+      return;
+    }
+
+    if (state.currency < REVIVE_PRICE) {
+      showToast("You need 25 SPARK to revive your streak.", "error");
+      return;
+    }
+
+    const restoredStreak = state.previousStreak;
+
+    state.currency -= REVIVE_PRICE;
+    state.streak = restoredStreak;
+    state.best = Math.max(state.best, restoredStreak);
+
+    // Start a fresh two-hour deadline for the revived streak.
+    state.lastSuccess = Date.now();
+    state.freezeActive = false;
+    state.nightFreezeUntil = 0;
+    state.nightFreezeApplied = false;
+
+    state.previousStreak = 0;
+    state.streakLostAt = 0;
+
+    saveState();
+
+    showToast(`Streak revived to ${restoredStreak} for 25 SPARK.`, "success");
+  }
+
+  function updateStreakUI() {
+    $("topStreak").textContent = String(state.streak);
+    $("streakNumber").textContent = String(state.streak);
+
+    $("topCurrency").textContent = String(state.currency);
+    $("currencyBalance").textContent = String(state.currency);
+    $("streakCurrency").textContent = `${state.currency} SPARK`;
+
+    $("bestStreak").textContent = String(state.best);
+    $("totalUploads").textContent = String(state.total);
+
+    $("freezeCount").textContent = `${state.freezes} owned`;
+    $("streakFreezes").textContent = `${state.freezes} owned`;
+
+    $("buyFreeze").disabled = state.currency < FREEZE_PRICE;
+
+    const reviveAvailable = hasReviveAvailable();
+    const reviveButton = $("reviveStreak");
+    const currencyReviveButton = $("reviveStreakCurrency");
+
+    reviveButton.style.display = reviveAvailable ? "flex" : "none";
+    currencyReviveButton.style.display = reviveAvailable ? "flex" : "none";
+
+    reviveButton.disabled = state.currency < REVIVE_PRICE;
+    currencyReviveButton.disabled = state.currency < REVIVE_PRICE;
+
+    $("previousStreakValue").textContent =
+      reviveAvailable ? String(state.previousStreak) : "—";
+
+    if (reviveAvailable) {
+      const expiresAt = state.streakLostAt + REVIVE_WINDOW;
+      $("previousStreakMessage").textContent =
+        `Available to revive for ${formatDuration(expiresAt - Date.now())}.`;
+
+      $("reviveCurrencyMessage").textContent =
+        state.currency >= REVIVE_PRICE
+          ? `Your previous streak was ${state.previousStreak}. Revive it before the 24-hour window expires.`
+          : `Your previous streak was ${state.previousStreak}. You need ${REVIVE_PRICE - state.currency} more SPARK.`;
+    } else {
+      $("previousStreakMessage").textContent = "No lost streak available to revive.";
+      $("reviveCurrencyMessage").textContent = "No lost streak is currently available to revive.";
+    }
+
+    if (!state.lastSuccess || state.streak <= 0) {
+      $("countdown").textContent = "CHECK IN";
+      $("deadlineMessage").textContent =
+        reviveAvailable
+          ? "Your streak was lost. You can revive it within 24 hours."
+          : "Send a photo or video successfully to start your two-hour window.";
+
+      $("deadlineProgress").style.width = "0%";
+      return;
+    }
+
+    const extension = getNightExtension();
+    const duration = (state.freezeActive ? FOUR_HOURS : TWO_HOURS) + extension;
+    const deadline = state.lastSuccess + duration;
+    const remaining = Math.max(0, deadline - Date.now());
+
+    if (state.nightFreezeUntil > Date.now()) {
+      $("countdown").textContent = formatDuration(state.nightFreezeUntil - Date.now());
+      $("deadlineMessage").textContent =
+        "Night Freeze active · Your countdown is paused for 9 hours.";
+      $("deadlineProgress").style.width = "100%";
+      return;
+    }
+
+    $("countdown").textContent = formatDuration(remaining);
+
+    if (state.freezeActive) {
+      $("deadlineMessage").textContent =
+        "Streak freeze active · Your deadline has been extended.";
+    } else if (state.nightFreezeApplied) {
+      $("deadlineMessage").textContent =
+        "Night Freeze completed · Your normal countdown has resumed.";
+    } else if (state.freezes > 0) {
+      $("deadlineMessage").textContent =
+        "A purchased freeze is available and will activate automatically if needed.";
+    } else {
+      $("deadlineMessage").textContent =
+        "Upload before the timer reaches zero to protect your streak.";
+    }
+
+    $("deadlineProgress").style.width =
+      `${Math.max(0, Math.min(100, remaining / duration * 100))}%`;
+  }
+
+  function formatDuration(ms) {
+    const seconds = Math.max(0, Math.floor(ms / 1000));
+    const h = Math.floor(seconds / 3600);
+    const m = Math.floor((seconds % 3600) / 60);
+    const s = seconds % 60;
+
+    return [h, m, s]
+      .map(n => String(n).padStart(2, "0"))
+      .join(":");
+  }
+
+  function showCelebration() {
+    $("celebrationText").textContent = `Streak ${state.streak}`;
+    $("celebrationSub").textContent = "+1 SPARK · Successfully sent to Discord";
+
+    const el = $("celebration");
+
+    el.classList.remove("show");
+    void el.offsetWidth;
+    el.classList.add("show");
+
+    clearTimeout(celebrationTimer);
+
+    celebrationTimer = setTimeout(() => {
+      el.classList.remove("show");
+    }, 5000);
+  }
+
+  async function startCamera() {
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      showToast("Camera access requires HTTPS or localhost and a supported browser.", "error");
+      $("cameraHint").textContent = "Open this app through HTTPS to use the camera.";
+      return false;
+    }
+
+    stopCamera();
+
+    try {
+      stream = await navigator.mediaDevices.getUserMedia({
+        audio: true,
+        video: {
+          facingMode: { ideal: facingMode },
+          width: { ideal: 1920 },
+          height: { ideal: 1080 }
+        }
+      });
+
+      camera.srcObject = stream;
+      await camera.play().catch(() => {});
+
+      $("cameraHint").textContent = "";
+      return true;
+    } catch (error) {
+      console.error("Camera error:", error);
+      $("cameraHint").textContent = "Allow camera and microphone access to continue.";
+      showToast(cameraErrorMessage(error), "error");
+      return false;
+    }
+  }
+
+  function cameraErrorMessage(error) {
+    if (error && error.name === "NotAllowedError") {
+      return "Camera or microphone permission was denied. Allow access in browser settings.";
+    }
+
+    if (error && error.name === "NotFoundError") {
+      return "No compatible camera was found.";
+    }
+
+    if (error && error.name === "NotReadableError") {
+      return "The camera may be in use by another app.";
+    }
+
+    return "Could not start the camera. Check permissions and try again.";
+  }
+
+  function stopCamera() {
+    if (stream) {
+      stream.getTracks().forEach(track => track.stop());
+      stream = null;
+    }
+
+    camera.srcObject = null;
+  }
+
+  function setMode(nextMode) {
+    if (recorder && recorder.state === "recording") {
+      showToast("Stop recording before changing modes.", "error");
+      return;
+    }
+
+    mode = nextMode;
+
+    $("photoMode").classList.toggle("active", mode === "photo");
+    $("videoMode").classList.toggle("active", mode === "video");
+
+    captureButton.classList.remove("recording");
+
+    captureButton.setAttribute(
+      "aria-label",
+      mode === "photo" ? "Take photo" : "Start recording"
+    );
+
+    $("cameraHint").textContent =
+      mode === "video" ? "Tap to record. Tap again to stop." : "";
+  }
+
+  function capturePhoto() {
+    if (!stream || !camera.videoWidth || !camera.videoHeight) {
+      showToast("Camera is not ready yet.", "error");
+      return;
+    }
+
+    const canvas = document.createElement("canvas");
+
+    canvas.width = camera.videoWidth;
+    canvas.height = camera.videoHeight;
+
+    const ctx = canvas.getContext("2d", { alpha: false });
+
+    if (facingMode === "user") {
+      ctx.translate(canvas.width, 0);
+      ctx.scale(-1, 1);
+    }
+
+    ctx.drawImage(camera, 0, 0, canvas.width, canvas.height);
+
+    canvas.toBlob(blob => {
+      if (!blob) {
+        showToast("Could not capture the photo. Please try again.", "error");
+        return;
+      }
+
+      openPreview(blob, "image/jpeg");
+    }, "image/jpeg", 0.92);
+  }
+
+  function getSupportedVideoMime() {
+    if (!window.MediaRecorder) return "";
+
+    const types = [
+      "video/webm;codecs=vp9,opus",
+      "video/webm;codecs=vp8,opus",
+      "video/webm",
+      "video/mp4"
+    ];
+
+    return types.find(type => MediaRecorder.isTypeSupported(type)) || "";
+  }
+
+  function startRecording() {
+    if (!stream) {
+      showToast("Camera is not ready yet.", "error");
+      return;
+    }
+
+    if (!window.MediaRecorder) {
+      showToast("Video recording is not supported by this browser.", "error");
+      return;
+    }
+
+    const mimeType = getSupportedVideoMime();
+
+    if (!mimeType) {
+      showToast("This browser does not support a compatible recording format.", "error");
+      return;
+    }
+
+    try {
+      recordedChunks = [];
+      recorder = new MediaRecorder(stream, { mimeType });
+
+      recorder.ondataavailable = event => {
+        if (event.data && event.data.size > 0) {
+          recordedChunks.push(event.data);
+        }
+      };
+
+      recorder.onerror = event => {
+        console.error("Recording error:", event.error);
+        showToast("Recording failed. Please try again.", "error");
+        resetRecordingUI();
+      };
+
+      recorder.onstop = () => {
+        clearInterval(recordingTimer);
+        recordingTimer = null;
+
+        const blob = new Blob(recordedChunks, {
+          type: recorder.mimeType || mimeType
+        });
+
+        recordedChunks = [];
+        resetRecordingUI();
+
+        if (!blob.size) {
+          showToast("No video was captured. Please try again.", "error");
+          return;
+        }
+
+        openPreview(blob, blob.type || "video/webm");
+      };
+
+      recorder.start(1000);
+
+      recordingStartedAt = Date.now();
+
+      captureButton.classList.add("recording");
+      recordingTime.classList.add("visible");
+      recordingTime.textContent = "00:00";
+
+      $("cameraHint").textContent = "Recording… tap the square to finish.";
+
+      recordingTimer = setInterval(() => {
+        const elapsed = Date.now() - recordingStartedAt;
+        recordingTime.textContent = formatDuration(elapsed).slice(3);
+
+        if (
+          elapsed >= MAX_RECORDING_MS &&
+          recorder &&
+          recorder.state === "recording"
+        ) {
+          stopRecording();
+          showToast("Maximum recording length reached.");
+        }
+      }, 250);
+    } catch (error) {
+      console.error(error);
+      showToast("Could not start recording. Try again.", "error");
+      resetRecordingUI();
+    }
+  }
+
+  function stopRecording() {
+    if (recorder && recorder.state === "recording") {
+      recorder.stop();
+    }
+  }
+
+  function resetRecordingUI() {
+    clearInterval(recordingTimer);
+    recordingTimer = null;
+
+    captureButton.classList.remove("recording");
+    recordingTime.classList.remove("visible");
+
+    $("cameraHint").textContent =
+      mode === "video" ? "Tap to record. Tap again to stop." : "";
+  }
+
+  function openPreview(blob, type) {
+    capturedBlob = blob;
+    capturedType = type;
+
+    if (capturedUrl) {
+      URL.revokeObjectURL(capturedUrl);
+    }
+
+    capturedUrl = URL.createObjectURL(blob);
+
+    previewMedia.pause();
+    previewMedia.removeAttribute("src");
+    previewMedia.src = capturedUrl;
+    previewMedia.controls = type.startsWith("video/");
+    previewMedia.load();
+
+    showView("previewView");
+  }
+
+  function discardCapture() {
+    if (uploading) return;
+
+    previewMedia.pause();
+    previewMedia.removeAttribute("src");
+    previewMedia.load();
+
+    if (capturedUrl) {
+      URL.revokeObjectURL(capturedUrl);
+    }
+
+    capturedUrl = null;
+    capturedBlob = null;
+    capturedType = "";
+
+    closeOverlays();
+  }
+
+  function setUploading(
+    active,
+    message = "Sending to Discord…",
+    subtext = "Your streak changes only after a successful upload."
+  ) {
+    uploading = active;
+
+    uploadOverlay.classList.toggle("open", active);
+
+    $("uploadMessage").textContent = message;
+    $("uploadSubtext").textContent = subtext;
+    $("uploadSpinner").style.display = active ? "block" : "none";
+
+    $("sendButton").disabled = active;
+    $("discardButton").disabled = active;
+    $("retakeButton").disabled = active;
+  }
+
+  async function sendCapture() {
+    if (uploading) return;
+
+    if (!capturedBlob) {
+      showToast("Capture a photo or video first.", "error");
+      return;
+    }
+
+    const webhook = getWebhook();
+
+    if (!isValidWebhook(webhook)) {
+      showToast("Add a valid Discord webhook URL in Settings.", "error");
+      $("webhookInput").value = webhook;
+      showView("settingsView");
+      return;
+    }
+
+    if (capturedBlob.size > MAX_UPLOAD_BYTES) {
+      showToast("File exceeds the 24 MB app limit. Record a shorter video.", "error");
+      return;
+    }
+
+    setUploading(true);
+
+    const isVideo = capturedType.startsWith("video/");
+    const extension = isVideo
+      ? (capturedType.includes("mp4") ? "mp4" : "webm")
+      : "jpg";
+
+    const filename = `${isVideo ? "checkin" : "photo"}-${Date.now()}.${extension}`;
+
+    const form = new FormData();
+
+    form.append("payload_json", JSON.stringify({
+      content: `📸 Check-in · ${new Date().toLocaleString()}`
+    }));
+
+    form.append("files[0]", capturedBlob, filename);
+
+    try {
+      const response = await fetch(`${webhook}?wait=true`, {
+        method: "POST",
+        body: form
+      });
+
+      if (!response.ok) {
+        let detail = "";
+
+        try {
+          const data = await response.json();
+          detail = data.message || "";
+        } catch {}
+
+        throw new Error(
+          `Discord returned HTTP ${response.status}${detail ? `: ${detail}` : ""}`
+        );
+      }
+
+      // Evaluate the previous deadline before incrementing the streak.
+      checkExpiry();
+
+      state.streak += 1;
+      state.best = Math.max(state.best, state.streak);
+      state.total += 1;
+      state.currency += 1;
+
+      state.lastSuccess = Date.now();
+      state.freezeActive = false;
+
+      // A successful upload starts a new check-in window.
+      // Preserve the nightly key so Night Freeze cannot be reused the same night.
+      state.nightFreezeUntil = 0;
+      state.nightFreezeApplied = false;
+
+      saveState();
+
+      setUploading(false);
+      discardCapture();
+      showCelebration();
+
+      showToast("Uploaded successfully. +1 SPARK and +1 streak.", "success");
+
+      // Offer Night Freeze only after a successful upload during the allowed hours.
+      if (canOfferNightFreeze()) {
+        setTimeout(offerNightFreeze, 650);
+      }
+    } catch (error) {
+      console.error("Discord upload failed:", error);
+
+      setUploading(false);
+
+      showToast(
+        error instanceof TypeError
+          ? "Upload failed. Check your connection, webhook URL, or browser CORS restrictions."
+          : (error.message || "Upload failed. Your streak and currency have not increased."),
+        "error"
+      );
+    }
+  }
+
+  async function testWebhook() {
+    const value = $("webhookInput").value.trim();
+
+    if (!isValidWebhook(value)) {
+      showToast("Enter a valid Discord webhook URL first.", "error");
+      return;
+    }
+
+    $("testWebhook").disabled = true;
+    $("testWebhook").textContent = "Testing…";
+
+    try {
+      const response = await fetch(value, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          content: "STREAK connection test successful."
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error(`Discord returned HTTP ${response.status}`);
+      }
+
+      showToast("Connection successful. Check your Discord channel.", "success");
+    } catch (error) {
+      console.error(error);
+
+      showToast(
+        "Test failed. Check the webhook and network. " + (error.message || ""),
+        "error"
+      );
+    } finally {
+      $("testWebhook").disabled = false;
+      $("testWebhook").textContent = "Test connection";
+    }
+  }
+
+  function purchaseFreeze() {
+    checkExpiry();
+
+    if (state.currency < FREEZE_PRICE) {
+      showToast("You need 15 SPARK to buy a freeze.", "error");
+      return;
+    }
+
+    state.currency -= FREEZE_PRICE;
+    state.freezes += 1;
+
+    saveState();
+    showToast("Streak freeze purchased for 15 SPARK.", "success");
+  }
+
+  async function saveAndConnect(inputId, shouldStartCamera) {
+    const value = $(inputId).value.trim();
+
+    if (!isValidWebhook(value)) {
+      showToast("Enter a valid Discord webhook URL.", "error");
+      return false;
+    }
+
+    if (!setWebhook(value)) {
+      return false;
+    }
+
+    $("webhookInput").value = value;
+
+    closeOverlays();
+    showToast("Webhook saved.", "success");
+
+    if (shouldStartCamera) {
+      await startCamera();
+    }
+
+    return true;
+  }
+
+  function updateCountdown() {
+    checkExpiry();
+    updateStreakUI();
+  }
+
+  $("photoMode").addEventListener("click", () => setMode("photo"));
+  $("videoMode").addEventListener("click", () => setMode("video"));
+
+  captureButton.addEventListener("click", () => {
+    if (uploading) return;
+
+    if (mode === "photo") {
+      capturePhoto();
+    } else if (recorder && recorder.state === "recording") {
+      stopRecording();
+    } else {
+      startRecording();
+    }
+  });
+
+  $("switchCamera").addEventListener("click", async () => {
+    if (recorder && recorder.state === "recording") {
+      showToast("Stop recording before switching cameras.", "error");
+      return;
+    }
+
+    facingMode = facingMode === "environment" ? "user" : "environment";
+    await startCamera();
+  });
+
+  $("openSettings").addEventListener("click", () => {
+    $("webhookInput").value = getWebhook();
+    showView("settingsView");
+  });
+
+  $("closeSettings").addEventListener("click", closeOverlays);
+
+  $("openStreak").addEventListener("click", () => {
+    updateCountdown();
+    showView("streakView");
+  });
+
+  $("closeStreak").addEventListener("click", closeOverlays);
+  $("backToCamera").addEventListener("click", closeOverlays);
+
+  $("openCurrency").addEventListener("click", () => {
+    updateCountdown();
+    showView("currencyView");
+  });
+
+  $("closeCurrency").addEventListener("click", closeOverlays);
+  $("currencyBackToCamera").addEventListener("click", closeOverlays);
+
+  $("retakeButton").addEventListener("click", discardCapture);
+  $("discardButton").addEventListener("click", discardCapture);
+  $("sendButton").addEventListener("click", sendCapture);
+
+  $("testWebhook").addEventListener("click", testWebhook);
+
+  $("saveWebhook").addEventListener("click", async () => {
+    await saveAndConnect("webhookInput", false);
+  });
+
+  $("connectDiscord").addEventListener("click", async () => {
+    const ok = await saveAndConnect("setupWebhook", false);
+    if (ok) await startCamera();
+  });
+
+  $("skipSetup").addEventListener("click", async () => {
+    closeOverlays();
+    await startCamera();
+  });
+
+  $("buyFreeze").addEventListener("click", purchaseFreeze);
+
+  $("reviveStreak").addEventListener("click", reviveStreak);
+  $("reviveStreakCurrency").addEventListener("click", reviveStreak);
+
+  $("activateNightFreeze").addEventListener("click", activateNightFreeze);
+  $("skipNightFreeze").addEventListener("click", dismissNightFreezePrompt);
+
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden) updateCountdown();
+  });
+
+  window.addEventListener("pagehide", () => {
+    if (recorder && recorder.state === "recording") {
+      try { recorder.stop(); } catch {}
+    }
+
+    stopCamera();
+  });
+
+  window.addEventListener("pageshow", updateCountdown);
+
+  // Generate the app icon entirely in code.
+  const iconSvg = `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+      <rect width="512" height="512" rx="112" fill="#09090b"/>
+      <path d="M278 66c11 84-32 111-63 151-27 34-30 55-22 88-38-19-57-59-50-97-57 54-84 107-73 161 14 67 73 112 145 112 78 0 142-61 142-139 0-94-66-177-144-276Z" fill="#ff663d"/>
+      <path d="M246 411c-35 0-62-28-62-62 0-24 14-44 34-65 2 28 20 42 35 50 19-20 27-37 24-68 27 29 45 57 45 84 0 34-28 61-76 61Z" fill="#fff"/>
+    </svg>
+  `;
+
+  const iconUrl = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(iconSvg);
+
+  $("appIcon").href = iconUrl;
+  $("appleIcon").href = iconUrl;
+
+  async function init() {
+    updateCountdown();
+    countdownTimer = setInterval(updateCountdown, 1000);
+
+    const webhook = getWebhook();
+
+    if (webhook) {
+      $("webhookInput").value = webhook;
+      await startCamera();
+    } else {
+      showView("setupView");
+    }
+
+    if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
+      try {
+        await navigator.serviceWorker.register("./service-worker.js");
+      } catch (error) {
+        console.warn("Service worker registration failed:", error);
+      }
+    }
+  }
+
+  init();
+})();
+</script>
+</body>
+</html>
